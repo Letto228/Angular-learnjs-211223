@@ -1,5 +1,79 @@
 {
-    "tabWidth": 4,
-    "useTabs": false,
-    "singleQuote": true
+  "printWidth": 100,
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "bracketSameLine": true,
+  "arrowParens": "avoid",
+  "useTabs": false,
+  "htmlWhitespaceSensitivity": "ignore",
+  "endOfLine": "auto",
+  "embeddedLanguageFormatting": "off",
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    },
+    {
+      "files": "*.{scss,css}",
+      "options": {
+        "parser": "css",
+        "singleQuote": false,
+        "semi": true,
+        "colorCase": "upper"
+      }
+    },
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": "*.ts",
+      "options": {
+        "parser": "typescript",
+        "importOrder": [
+          "^@angular(.*)$",
+          "^rxjs(.*)$",
+          "^ramda(.*)$",
+          "^@datorama/akita(.*)$",
+          "^@ngneat/transloco(.*)$",
+          "^core-library(.*)$",
+          "^assets-library(.*)$",
+          "^crm-library(.*)$",
+          "^antifraud-library(.*)$",
+          "^aeg-library(.*)$",
+          "^cashier-library(.*)$",
+          "^@domains/(.*)$",
+          "^@modules/(.*)$",
+          "^@apps/(.*)$",
+          "^[./]"
+        ],
+        "importOrderSeparation": true,
+        "importOrderSortSpecifiers": true,
+        "importOrderParserPlugins": [
+          "typescript",
+          "classProperties",
+          "decorators-legacy"
+        ]
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "parser": "markdown"
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
 }

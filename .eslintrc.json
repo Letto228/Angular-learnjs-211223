@@ -1,47 +1,73 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "projects/**/*"
-  ],
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/eslint-recommended"
       ],
+      "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+      },
       "rules": {
-        "@angular-eslint/directive-selector": [
+        "indent": "off",
+        "max-len": ["error", {"code": 100, "ignoreUrls": true}], // specify the maximum length of a line in your program (off by default)
+        "object-curly-newline": "off",
+        "operator-linebreak": "off",
+        "@angular-eslint/component-class-suffix": [
           "error",
           {
-            "type": "attribute",
-            "prefix": "app",
-            "style": "camelCase"
+            "suffixes": [
+              "Component",
+              "Controller",
+              "Root"
+            ]
           }
         ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
-          }
-        ]
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "no-extra-boolean-cast": "off", // disallow double-negation boolean casts in a boolean context
+        "no-useless-return": "off",
+        "comma-dangle": ["error", "always-multiline"], // disallow or enforce trailing commas
+        "semi": ["error", "always"], // require or disallow use of semicolons instead of ASI
+        "semi-style": ["error", "last"],
+        "object-curly-spacing": ["error", "always"],
+        "template-curly-spacing": ["error", "always"],
+        "no-console": ["error", { "allow": ["error"]}] // disallow use of console (off by default in the node environment)
+      },
+      "parserOptions": {
+        "sourceType": "module",
+        "project": [
+          "tsconfig.json"
+        ],
+        "createDefaultProgram": true
       }
     },
     {
-      "files": [
-        "*.html"
-      ],
+      "files": ["*.html"],
       "extends": [
-        "plugin:@angular-eslint/template/recommended",
-        "plugin:@angular-eslint/template/accessibility"
+        "plugin:@angular-eslint/template/recommended"
       ],
-      "rules": {}
+      "plugins": [
+        "prettier"
+      ],
+      "rules": {
+        "prettier/prettier": ["error", { "parser": "angular" }]
+      }
+    },
+    {
+      "files": ["*.js"],
+      "parserOptions": {
+        "ecmaVersion": 2017
+      }
     }
   ]
 }
