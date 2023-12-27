@@ -3,6 +3,12 @@
   "ignorePatterns": [
     "projects/**/*"
   ],
+  "plugins": [
+    "@nrwl/nx",
+    "@nrwl/eslint-plugin-nx",
+    "@typescript-eslint",
+    "@angular-eslint/eslint-plugin"
+  ],
   "overrides": [
     {
       "files": [
@@ -15,6 +21,15 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "semi": "error",
+        "padding-line-between-statements": [
+          "error",
+          {
+            "blankLine": "always",
+            "prev": "*",
+            "next": "return"
+          }
+        ],
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -29,6 +44,107 @@
             "type": "element",
             "prefix": "app",
             "style": "kebab-case"
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": [
+              "camelCase"
+            ],
+            "custom": {
+              "regex": "^[^А-ЯЁа-яё]*$",
+              "match": true
+            }
+          },
+          {
+            "selector": [
+              "classProperty",
+              "parameterProperty"
+            ],
+            "format": [
+              "camelCase"
+            ],
+            "modifiers": [
+              "private"
+            ],
+            "prefix": [
+              "_"
+            ],
+            "custom": {
+              "regex": "^[^А-ЯЁа-яё]*$",
+              "match": true
+            }
+          },
+          {
+            "selector": [
+              "classProperty"
+            ],
+            "modifiers": [
+              "public",
+              "static",
+              "readonly"
+            ],
+            "format": [
+              "camelCase",
+              "UPPER_CASE"
+            ],
+            "custom": {
+              "regex": "^[^А-ЯЁа-яё]*$",
+              "match": true
+            }
+          },
+          {
+            "selector": "interface",
+            "format": [
+              "PascalCase"
+            ],
+            "custom": {
+              "regex": "^I[A-Z][^А-Яа-я]*$",
+              "match": true
+            }
+          },
+          {
+            "selector": "typeLike",
+            "format": [
+              "PascalCase"
+            ],
+            "custom": {
+              "regex": "^[^А-ЯЁа-яё]*$",
+              "match": true
+            }
+          },
+          {
+            "selector": [
+              "variable"
+            ],
+            "modifiers": [
+              "const",
+              "exported"
+            ],
+            "format": [
+              "camelCase",
+              "UPPER_CASE"
+            ],
+            "custom": {
+              "regex": "^[^А-ЯЁа-яё]*$",
+              "match": true
+            }
+          }
+        ],
+        "quotes": [
+          "error",
+          "single",
+          {
+            "allowTemplateLiterals": true
+          }
+        ],
+        "indent": [
+          "error",
+          4,
+          {
+            "SwitchCase": 1
           }
         ]
       }
