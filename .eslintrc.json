@@ -1,18 +1,12 @@
 {
     "root": true,
     "ignorePatterns": ["projects/**/*"],
+    "extends": ["prettier"],
+    "plugins": ["prettier"],
+    "rules": {
+        "prettier/prettier": ["error"]
+    },
     "overrides": [
-        {
-            "extends": ["eslint:recommended", "google"],
-            "rules": {}
-        },
-        {
-            "extends": ["prettier"],
-            "plugins": ["prettier"],
-            "rules": {
-                "prettier/prettier": ["error"]
-            }
-        },
         {
             "files": ["*.ts"],
             "extends": [
