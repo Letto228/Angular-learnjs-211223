@@ -37,23 +37,6 @@
       "files": "*.ts",
       "options": {
         "parser": "typescript",
-        "importOrder": [
-          "^@angular(.*)$",
-          "^rxjs(.*)$",
-          "^ramda(.*)$",
-          "^@datorama/akita(.*)$",
-          "^@ngneat/transloco(.*)$",
-          "^core-library(.*)$",
-          "^assets-library(.*)$",
-          "^crm-library(.*)$",
-          "^antifraud-library(.*)$",
-          "^aeg-library(.*)$",
-          "^cashier-library(.*)$",
-          "^@domains/(.*)$",
-          "^@modules/(.*)$",
-          "^@apps/(.*)$",
-          "^[./]"
-        ],
         "importOrderSeparation": true,
         "importOrderSortSpecifiers": true,
         "importOrderParserPlugins": [
