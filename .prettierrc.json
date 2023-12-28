@@ -1,5 +1,23 @@
 {
     "tabWidth": 4,
     "useTabs": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "semi": true,
+    "overrides": [
+        {
+            "files": "*.html",
+            "options": {
+                "parser": "html"
+            }
+        },
+        {
+            "files": "*.component.html",
+            "options": {
+                "parser": "angular"
+            }
+        }
+    ]
 }
