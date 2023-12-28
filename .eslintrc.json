@@ -15,7 +15,6 @@
         "es6": true
       },
       "rules": {
-        "prettier/prettier": ["error", { "parser": "angular" }],
         "indent": "off",
         "max-len": ["error", {"code": 100, "ignoreUrls": true}], // specify the maximum length of a line in your program (off by default)
         "object-curly-newline": ["error", { "multiline": true, "consistent": true }],
@@ -57,10 +56,7 @@
       "files": ["*.html"],
       "extends": [
         "plugin:@angular-eslint/template/recommended"
-      ],
-      "rules": {
-        "prettier/prettier": ["error", { "parser": "angular" }]
-      }
+      ]
     },
     {
       "files": ["*.js"],
