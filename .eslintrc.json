@@ -1,5 +1,6 @@
 {
   "root": true,
+  "plugins": ["prettier"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -14,9 +15,10 @@
         "es6": true
       },
       "rules": {
+        "prettier/prettier": ["error", { "parser": "angular" }],
         "indent": "off",
         "max-len": ["error", {"code": 100, "ignoreUrls": true}], // specify the maximum length of a line in your program (off by default)
-        "object-curly-newline": "off",
+        "object-curly-newline": ["error", { "multiline": true, "consistent": true }],
         "operator-linebreak": "off",
         "@angular-eslint/component-class-suffix": [
           "error",
@@ -28,9 +30,9 @@
             ]
           }
         ],
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/ban-ts-comment": "warn",
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -55,9 +57,6 @@
       "files": ["*.html"],
       "extends": [
         "plugin:@angular-eslint/template/recommended"
-      ],
-      "plugins": [
-        "prettier"
       ],
       "rules": {
         "prettier/prettier": ["error", { "parser": "angular" }]
