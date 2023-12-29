@@ -1,0 +1,20 @@
+<mat-card *ngIf="product" class="product-card">
+    <mat-card-header>
+        <mat-card-title>{{ product.name }}</mat-card-title>
+    </mat-card-header>
+    <img
+        *ngIf="product.images?.length"
+        mat-card-image
+        [src]="product.images[0].url"
+        [alt]="'Photo of product'"
+    />
+    <mat-card-content>
+        <dl class="product-card__price">
+            <dt>Price:</dt>
+            <dd>{{ product.price }}</dd>
+        </dl>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="buyClick($event)">Купить</button>
+    </mat-card-actions>
+</mat-card>
