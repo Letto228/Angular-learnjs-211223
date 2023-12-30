@@ -1,0 +1,5 @@
+<mat-card class="product-card">
+    <img mat-card-image alt="productMock" [src]="product.images[0].url" />
+    <mat-card-content class="product-price">${{ product.price }}</mat-card-content>
+    <button mat-flat-button (click)="buyClick($event, product.name)">BUY NOW</button>
+</mat-card>
