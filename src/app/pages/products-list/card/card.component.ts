@@ -8,11 +8,9 @@ import {IProduct} from '../../../shared/products/product.interface';
     styleUrls: ['./card.component.css'],
 })
 export class CardComponent {
-    protected mocks: IProduct = productMock;
-    protected price = this.mocks.price;
-    protected image = this.mocks.images[0].url;
+    mocks: IProduct = productMock;
 
-    protected buyItem(event: Event): void {
+    buyItem(event: Event): void {
         // eslint-disable-next-line no-console
         console.log('Click');
         event.stopPropagation();
