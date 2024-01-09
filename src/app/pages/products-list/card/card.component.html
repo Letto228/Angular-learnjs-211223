@@ -1,0 +1,13 @@
+<mat-card class="example-card">
+    <img mat-card-image [src]="cover.url" [alt]="cover.source" />
+
+    <mat-card-content>
+        <p>
+            {{ product.name }}
+        </p>
+    </mat-card-content>
+
+    <button mat-raised-button color="primary" (click)="$event.stopPropagation(); buyNow()">
+        Buy now for ${{ product.price }}
+    </button>
+</mat-card>
