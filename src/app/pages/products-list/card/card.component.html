@@ -1,0 +1,9 @@
+<mat-card class="example-card">
+    <img mat-card-image src="{{ mocks.images[0].url }}" alt="Card description" />
+    <mat-card-content>
+        <p>Price: {{ mocks.price }} rub</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="buyItem($event)">BUY</button>
+    </mat-card-actions>
+</mat-card>
