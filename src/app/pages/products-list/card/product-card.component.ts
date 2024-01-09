@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {IProduct} from 'src/app/shared/products/product.interface';
+import {Component} from '@angular/core';
 import {productMock} from 'src/app/shared/products/product.mock';
 
 @Component({
@@ -7,12 +6,8 @@ import {productMock} from 'src/app/shared/products/product.mock';
     templateUrl: './product-card.component.html',
     styleUrls: ['./product-card.component.css'],
 })
-export class ProductCardComponent implements OnInit {
-    product: IProduct | undefined;
-
-    ngOnInit(): void {
-        this.product = productMock;
-    }
+export class ProductCardComponent {
+    readonly product = productMock;
 
     buyClick(event: MouseEvent) {
         event.stopPropagation();

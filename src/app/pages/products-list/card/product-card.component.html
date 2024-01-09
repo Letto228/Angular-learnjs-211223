@@ -2,12 +2,7 @@
     <mat-card-header>
         <mat-card-title>{{ product.name }}</mat-card-title>
     </mat-card-header>
-    <img
-        *ngIf="product.images?.length"
-        mat-card-image
-        [src]="product.images[0].url"
-        [alt]="'Photo of product'"
-    />
+    <img mat-card-image [src]="product.images?.[0]?.url" [alt]="'Photo of product'" />
     <mat-card-content>
         <dl class="product-card__price">
             <dt>Price:</dt>
