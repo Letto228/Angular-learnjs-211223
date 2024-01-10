@@ -1,0 +1,15 @@
+<mat-card class="card-item">
+  <mat-card-header class="card-item__header">
+    <div mat-card-title class="card-item__price">{{price}} &#8381;</div>
+  </mat-card-header>
+  <img class="card-item__image" [src]="imageUrl" mat-card-image>
+  <mat-card-actions class="card-item__footer">
+    <button mat-raised-button (click)="buyProduct()">Купить</button>
+  </mat-card-actions>
+</mat-card>
+
+<!-- <div class="card-item">
+  <img class="card-item__image" [src]="imageUrl" alt="">
+  <div class="card-item__price">{{price}}</div>
+  <button mat-raised-button (click)="buyProduct()">Купить</button>
+</div> -->
