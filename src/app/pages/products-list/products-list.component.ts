@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {IProduct} from '../../shared/products/product.interface';
 
 @Component({
     selector: 'app-products-list',
@@ -6,8 +7,12 @@ import {Component} from '@angular/core';
     styleUrls: ['./products-list.component.css'],
 })
 export class ProductsListComponent {
-    onCardClick() {
+    @Input() cards: IProduct[] | null = null;
+    // ToDo: Опять же вопрос на сколько правильно просто дублировать и прокидывать выше?
+    @Output() addToCart = new EventEmitter<string>();
+
+    onAddToCart(id: string): void {
         // eslint-disable-next-line no-console
-        console.log('Card click');
+        this.addToCart.emit(id);
     }
 }

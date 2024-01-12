@@ -1,19 +1,21 @@
 <mat-card class="card">
     <mat-card-header>
-        <mat-card-title>{{ product.name }}</mat-card-title>
-        <mat-card-subtitle>{{ product.price }} $</mat-card-subtitle>
+        <!-- ToDo: Егор получается из за проверки на нулл, мне всегда надо ставит ? везде где есть шанс что будет нулл? На сколько это норма?-->
+        <mat-card-title>{{ card?.name }}</mat-card-title>
+        <mat-card-subtitle>{{ card?.price }} $</mat-card-subtitle>
     </mat-card-header>
     <div class="galerey">
         <button mat-icon-button disabled>
             <mat-icon>chevron_left</mat-icon>
         </button>
-        <img mat-card-image alt="Product photo" [src]="product.images[0].url" />
+        <!--      ToDO: Вообще не уверен, что так правильно, как то попахивает [src]="card?.images?.[0]?.url || ''" -->
+        <img mat-card-image alt="Product photo" [src]="card?.images?.[0]?.url || ''" />
         <button mat-icon-button disabled>
             <mat-icon>chevron_right</mat-icon>
         </button>
     </div>
     <mat-card-content>
-        <p>Отзывы: {{ product.feedbacksCount }}</p>
+        <p>Отзывы: {{ card?.feedbacksCount }}</p>
         <div class="raiting">
             Рейтинг:
             <mat-icon [class.star-active]="isStarActive(1)">star</mat-icon>
@@ -24,6 +26,6 @@
         </div>
     </mat-card-content>
     <mat-card-actions class="mat-card-actions-align-end">
-        <button mat-button (click)="onProductBuy($event)">Buy</button>
+        <button mat-button (click)="onAddToCart()">Buy</button>
     </mat-card-actions>
 </mat-card>

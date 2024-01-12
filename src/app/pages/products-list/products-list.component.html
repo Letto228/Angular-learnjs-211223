@@ -1,1 +1,3 @@
-<app-card (click)="onCardClick()"></app-card>
+<ng-container *ngFor="let item of cards">
+    <app-card [card]="item" (addToCart)="onAddToCart($event)"></app-card>
+</ng-container>
