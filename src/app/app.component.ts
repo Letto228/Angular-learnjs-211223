@@ -20,7 +20,7 @@ export class AppComponent {
     //     console.log('Menu clicked | App');
     // }
 
-    // TodO: Это чепуха так прокидывать и дублировать код
+    // TodO: Это же чепуха так прокидывать и дублировать код на самый вверх?
     onAddToCart(id: string): void {
         // eslint-disable-next-line no-console
         console.log('Product added to cart', id);
