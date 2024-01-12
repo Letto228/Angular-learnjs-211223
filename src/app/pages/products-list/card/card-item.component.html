@@ -1,0 +1,14 @@
+<mat-card class="card-item">
+    <mat-card-header class="card-item__header">
+        <div mat-card-title class="card-item__price">{{ productMock.price }} &#8381;</div>
+    </mat-card-header>
+    <img
+        mat-card-image
+        alt="card-image"
+        class="card-item__image"
+        [src]="productMock.images[0].url"
+    />
+    <mat-card-actions class="card-item__footer">
+        <button mat-raised-button (click)="buyProduct()">Купить</button>
+    </mat-card-actions>
+</mat-card>
