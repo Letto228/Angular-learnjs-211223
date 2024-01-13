@@ -1,1 +1,10 @@
-<app-card (click)="onCardClick()"></app-card>
+<app-card
+    [product]="products[0]"
+    (ProductBuy)="addToCart($event)"
+    (click)="onCardClick()"
+></app-card>
+<app-card
+    [product]="products[1]"
+    (ProductBuy)="addToCart($event)"
+    (click)="onCardClick()"
+></app-card>
