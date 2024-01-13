@@ -1,1 +1,1 @@
-<app-card (click)="onCardClick()"></app-card>
+<app-card #card [product]="products[0]" (click)="onCardClick()" (buy)="onBuy($event)"></app-card>
