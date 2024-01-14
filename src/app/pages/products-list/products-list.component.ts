@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {IProduct} from '../../shared/products/product.interface';
+import {Component} from '@angular/core';
+import {productsMock} from '../../shared/products/products.mock';
 
 @Component({
     selector: 'app-products-list',
@@ -7,12 +7,10 @@ import {IProduct} from '../../shared/products/product.interface';
     styleUrls: ['./products-list.component.css'],
 })
 export class ProductsListComponent {
-    @Input() cards: IProduct[] | null = null;
-    // ToDo: Опять же вопрос на сколько правильно просто дублировать и прокидывать выше?
-    @Output() addToCart = new EventEmitter<string>();
+    readonly mockData = productsMock;
 
     onAddToCart(id: string): void {
         // eslint-disable-next-line no-console
-        this.addToCart.emit(id);
+        console.log('Add to cart clicked | ProductsList', id);
     }
 }

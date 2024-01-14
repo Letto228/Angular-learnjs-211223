@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {IProduct} from '../../../shared/products/product.interface';
 
 @Component({
@@ -6,25 +6,17 @@ import {IProduct} from '../../../shared/products/product.interface';
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.css'],
 })
-export class CardComponent implements OnInit {
-    @Input() card: IProduct | null = null;
-    @Output() addToCart = new EventEmitter<string>();
-    rating = 0;
-
-    // Todo: Я помню ты говорил что надо через родителя, а такой вариант не подходит?
-    ngOnInit(): void {
-        if (this.card) {
-            this.rating = this.card.rating;
-        }
-    }
+export class CardComponent {
+    @Input() product: IProduct | null = null;
+    @Output() readonly addToCart = new EventEmitter<string>();
 
     onAddToCart(): void {
-        if (this.card) {
-            this.addToCart.emit(this.card?._id);
+        if (this.product) {
+            this.addToCart.emit(this.product._id);
         }
     }
 
     isStarActive(starIndex: number): boolean {
-        return starIndex <= this.rating;
+        return starIndex <= (this.product?.rating ?? 0);
     }
 }
