@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {IProduct} from 'src/app/shared/products/product.interface';
 import {productsMock} from 'src/app/shared/products/products.mock';
 
 @Component({
@@ -15,8 +14,8 @@ export class ProductsListComponent {
         console.log('Card click');
     }
 
-    onBuy(product: IProduct) {
+    onBuy(productId: string) {
         // eslint-disable-next-line no-console
-        console.log(`Product list on by product`, product);
+        console.log(`Product list on by product`, productId);
     }
 }

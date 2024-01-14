@@ -1,5 +1,4 @@
-import {Component, Input, Output} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {IProduct} from 'src/app/shared/products/product.interface';
 
 @Component({
@@ -10,7 +9,7 @@ import {IProduct} from 'src/app/shared/products/product.interface';
 export class CardComponent {
     @Input() product: IProduct | null = null;
 
-    @Output() buy = new Subject<IProduct>();
+    @Output() buy = new EventEmitter<string>();
 
     onProductBuy(event: Event) {
         if (!this.product) {
@@ -19,7 +18,7 @@ export class CardComponent {
 
         event.stopPropagation();
 
-        this.buy.next(this.product);
+        this.buy.next(this.product._id);
 
         // eslint-disable-next-line no-console
         console.log('Buy product');
