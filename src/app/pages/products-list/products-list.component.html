@@ -1,1 +1,7 @@
-<app-card (click)="onCardClick()"></app-card>
+<div class="product-list">
+    <app-card
+        *ngFor="let item of productMock"
+        [product]="item"
+        (productId)="getProductId($event)"
+    ></app-card>
+</div>
