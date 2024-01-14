@@ -12,7 +12,8 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "airbnb-typescript/base"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -30,7 +31,14 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "no-console": ["error", {
+          "allow": ["warn", "error"]
+          }],
+        "no-debugger": "error",
+        "max-len": ["error", {"code": 120}],
+        "no-var": "error",
+        "prefer-const": "error"
       }
     },
     {
@@ -41,7 +49,10 @@
         "plugin:@angular-eslint/template/recommended",
         "plugin:@angular-eslint/template/accessibility"
       ],
-      "rules": {}
+      "rules": {
+        "@angular-eslint/template/cyclomatic-complexity": "error",
+        "@angular-eslint/template/no-call-expression": "error"
+      }
     }
   ]
 }
