@@ -3,6 +3,17 @@
   "ignorePatterns": [
     "projects/**/*"
   ],
+  "extends": [
+    "google",
+    "eslint:recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error"
+  },
   "overrides": [
     {
       "files": [
