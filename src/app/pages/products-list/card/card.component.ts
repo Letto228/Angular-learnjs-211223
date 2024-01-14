@@ -9,7 +9,7 @@ import {IProduct} from 'src/app/shared/products/product.interface';
 export class CardComponent {
     @Input() product: IProduct | null = null;
 
-    @Output() buy = new EventEmitter<string>();
+    @Output() readonly buy = new EventEmitter<string>();
 
     onProductBuy(event: Event) {
         if (!this.product) {
