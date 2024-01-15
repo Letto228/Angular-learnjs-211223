@@ -15,8 +15,8 @@ export class ProductsListComponent {
         console.log('Card click');
     }
 
-    addToCart(product: IProduct) {
+    addToCart(product: IProduct | undefined) {
         // eslint-disable-next-line no-console
-        console.log(`товар "${product.name}" добавлен в корзину`);
+        console.log(`товар "${product?.name}" добавлен в корзину`);
     }
 }
