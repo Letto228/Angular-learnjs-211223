@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {IProduct} from '../../../shared/products/product.interface';
 
 @Component({
@@ -6,29 +6,31 @@ import {IProduct} from '../../../shared/products/product.interface';
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.css'],
 })
-export class CardComponent implements OnInit {
+export class CardComponent {
+    get imageUrl() {
+        if (this.product) {
+            return this.product.images[0].url;
+        }
+
+        return undefined;
+    }
+
     @Input({required: true})
     product: IProduct | null = null;
 
     @Output()
-    productId = new EventEmitter<string>();
-
-    imageUrl = '';
-
-    ngOnInit(): void {
-        if (this.product?.images) {
-            this.imageUrl = this.product.images[0].url;
-        }
-    }
+    readonly productId = new EventEmitter<IProduct>();
 
     onProductBuy(event: Event) {
         event.stopPropagation();
 
         // eslint-disable-next-line no-console
-        this.productId.emit(this.product?._id);
+        if (this.product) {
+            this.productId.emit(this.product);
+        }
     }
 
-    isStarActive(starIndex: number): boolean | null {
-        return this.product ? this.product?.rating >= starIndex : null;
+    isStarActive(starIndex: number): boolean {
+        return Number(this.product?.rating) >= starIndex;
     }
 }
