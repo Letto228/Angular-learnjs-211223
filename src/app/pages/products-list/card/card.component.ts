@@ -18,7 +18,7 @@ export class CardComponent {
 
         event.stopPropagation();
 
-        this.buy.next(this.product._id);
+        this.buy.emit(this.product._id);
 
         // eslint-disable-next-line no-console
         console.log('Buy product');
