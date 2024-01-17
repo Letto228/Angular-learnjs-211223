@@ -1,7 +1,6 @@
 import {
     AfterViewInit,
     Component,
-    ElementRef,
     Input,
     TemplateRef,
     ViewChild,
@@ -25,9 +24,6 @@ export class PopupHostComponent implements AfterViewInit {
             this.isVisible = true;
         }
     }
-
-    @ViewChild('content')
-    content: ElementRef | null = null;
 
     @ViewChild('viewContainer', {read: ViewContainerRef})
     viewContainer: ViewContainerRef | null = null;
