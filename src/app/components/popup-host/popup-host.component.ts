@@ -8,9 +8,8 @@ import {Component, Input, TemplateRef, ViewContainerRef, ViewChild, OnChanges} f
 export class PopupHostComponent implements OnChanges {
     @Input() template: TemplateRef<unknown> | undefined;
 
-    @ViewChild('viewport', {read: ViewContainerRef, static: true}) private readonly viewContainer:
-        | ViewContainerRef
-        | undefined;
+    @ViewChild('viewport', {read: ViewContainerRef, static: true})
+    private readonly viewContainer: ViewContainerRef | undefined;
 
     ngOnChanges(): void {
         this.viewContainer?.clear();
