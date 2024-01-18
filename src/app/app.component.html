@@ -4,9 +4,9 @@
 ></app-header>
 <!-- <app-sidenav #sidenav [navigationTemplate]="navigationTemplate"> -->
 <app-sidenav #sidenav>
-    <div #first>
-        <div #second>text</div>
-    </div>
+    <!--    <div #first>-->
+    <!--        <div #second>text</div>-->
+    <!--    </div>-->
 
     <!-- <ng-container ngProjectAs="list">
         {{applicationConfig.title}}
@@ -20,7 +20,7 @@
 
     <!-- <ng-template #navigationTemplate>
         {{applicationConfig.title}}
-    
+
         <mat-list role="list">
             <mat-list-item role="listitem">Item 1</mat-list-item>
             <mat-list-item role="listitem">Item 2</mat-list-item>
@@ -45,19 +45,19 @@
 
 <!-- Switch template -->
 
-<!-- <app-popup-host [template]="switchTemplate ? first : second"></app-popup-host> -->
+<app-popup-host [template]="switchTemplate ? first : second"></app-popup-host>
 
 <!-- or -->
 
 <!-- Close template -->
 
-<!-- <app-popup-host [template]="!closeTemplate ? first : null"></app-popup-host> -->
+<!-- <app-popup-host [template]="!closeTemplate ? first : null"></app-popup-host>-->
 
-<!-- <ng-template #first>
+<ng-template #first>
     <h2>First</h2>
     <p>Is first template</p>
 </ng-template>
 <ng-template #second>
     <h2>Second</h2>
     <p>Is second template</p>
-</ng-template> -->
+</ng-template>
