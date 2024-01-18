@@ -17,11 +17,10 @@ export class PopupHostComponent implements AfterViewInit {
 
     @Input() set template(template: TemplateRef<unknown> | null) {
         this.viewContainer?.clear();
-        this.isVisible = false;
+        this.isVisible = Boolean(template);
 
         if (template) {
             this.viewContainer?.createEmbeddedView(template);
-            this.isVisible = true;
         }
     }
 
