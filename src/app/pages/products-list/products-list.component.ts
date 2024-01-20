@@ -18,7 +18,7 @@ export class ProductsListComponent {
     constructor() {
         setTimeout(() => {
             this.productsStore = productsMock;
-        }, 0);
+        }, 2000);
     }
 
     onProductBuy(id: IProduct['_id']) {

@@ -20,23 +20,25 @@ export class InfinityScrollDirective {
     }
 
     private borderObserver() {
-        const currentScrollTop = this.scrollContainer?.scrollTop || 0;
-        // console.log(currentScrollTop, 'current');
+        if (this.scrollContainer) {
+            const currentScrollTop = this.scrollContainer.scrollTop;
+            // console.log(currentScrollTop, 'current');
 
-        if (currentScrollTop <= this.borderOffset && this.lastScrollTop > currentScrollTop) {
-            this.loadData.emit(LoadDirection.fromTop);
+            if (currentScrollTop <= this.borderOffset && this.lastScrollTop > currentScrollTop) {
+                this.loadData.emit(LoadDirection.fromTop);
+            }
+
+            if (
+                this.scrollContainer.scrollHeight -
+                    (this.scrollContainer.getBoundingClientRect().height + currentScrollTop) <=
+                    this.borderOffset &&
+                this.lastScrollTop < currentScrollTop
+            ) {
+                this.loadData.emit(LoadDirection.fromBottom);
+            }
+
+            this.lastScrollTop = currentScrollTop;
+            // console.log(this.lastScrollTop, 'last');
         }
-
-        if (
-            (this.scrollContainer?.scrollHeight || 0) -
-                ((this.scrollContainer?.getBoundingClientRect().height || 0) + currentScrollTop) <=
-                this.borderOffset &&
-            this.lastScrollTop < currentScrollTop
-        ) {
-            this.loadData.emit(LoadDirection.fromBottom);
-        }
-
-        this.lastScrollTop = currentScrollTop;
-        // console.log(this.lastScrollTop, 'last');
     }
 }
