@@ -1,44 +1,42 @@
-import {Directive, EventEmitter, HostListener, Input, Output} from '@angular/core';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 import {LoadDirection} from '../load-direction/load-direction.enum';
 
 @Directive({
     selector: '[appInfinityScroll]',
 })
 export class InfinityScrollDirective {
-    constructor() {
-        this.lastScrollTop = this.scrollContainer?.scrollTop || 0;
-    }
-
-    @Input() scrollContainer: HTMLElement | undefined;
     @Output() readonly loadData = new EventEmitter<LoadDirection>();
 
     private readonly borderOffset = 100;
-    private lastScrollTop: number;
+    private lastScrollTop = 0;
 
-    @HostListener('scroll') onScroll() {
-        this.borderObserver();
+    @HostListener('scroll', ['$event', '$event.target']) onScroll(
+        event: MouseEvent,
+        elem: HTMLElement,
+    ) {
+        this.borderObserver(elem);
+        event.stopPropagation();
     }
 
-    private borderObserver() {
-        if (this.scrollContainer) {
-            const currentScrollTop = this.scrollContainer.scrollTop;
-            // console.log(currentScrollTop, 'current');
+    private borderObserver(elem: HTMLElement) {
+        if (elem) {
+            const CURRENT_SCROLL_TOP = elem.scrollTop;
+            const HEIGHT = elem.getBoundingClientRect().height;
+            const SCROLL_HEIGHT = elem.scrollHeight;
 
-            if (currentScrollTop <= this.borderOffset && this.lastScrollTop > currentScrollTop) {
+            if (
+                SCROLL_HEIGHT - (HEIGHT + CURRENT_SCROLL_TOP) <= this.borderOffset &&
+                this.lastScrollTop < CURRENT_SCROLL_TOP
+            ) {
+                this.loadData.emit(LoadDirection.fromBottom);
+            } else if (
+                CURRENT_SCROLL_TOP <= this.borderOffset &&
+                this.lastScrollTop > CURRENT_SCROLL_TOP
+            ) {
                 this.loadData.emit(LoadDirection.fromTop);
             }
 
-            if (
-                this.scrollContainer.scrollHeight -
-                    (this.scrollContainer.getBoundingClientRect().height + currentScrollTop) <=
-                    this.borderOffset &&
-                this.lastScrollTop < currentScrollTop
-            ) {
-                this.loadData.emit(LoadDirection.fromBottom);
-            }
-
-            this.lastScrollTop = currentScrollTop;
-            // console.log(this.lastScrollTop, 'last');
+            this.lastScrollTop = CURRENT_SCROLL_TOP;
         }
     }
 }

@@ -5,13 +5,7 @@
     [ngIfElse]="loaderTemplate"
 >
     <!-- Раскомментировать div при выполнении ДЗ -->
-    <div
-        #scrollContainer
-        appInfinityScroll
-        class="scroll-container"
-        [scrollContainer]="scrollContainer"
-        (loadData)="onLoad($event)"
-    >
+    <div #scrollContainer appInfinityScroll class="scroll-container" (loadData)="onLoad($event)">
         <!-- {{toString}} -->
         <!-- <ng-template [appDumpNgIf]="products" let-productsFromNgIf="appDumpNgIf" let-name="name"> -->
         <!-- {{name}} -->

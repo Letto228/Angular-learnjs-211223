@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {LoadDirection} from 'src/app/shared/load-direction/load-direction.enum';
 import {IProduct} from '../../shared/products/product.interface';
 import {productsMock} from '../../shared/products/products.mock';
@@ -30,7 +30,4 @@ export class ProductsListComponent {
         // eslint-disable-next-line no-console
         console.log(event);
     }
-
-    @ViewChild('scrollContainer', {read: ElementRef, static: false})
-    readonly scrollContainer: ElementRef | undefined;
 }
