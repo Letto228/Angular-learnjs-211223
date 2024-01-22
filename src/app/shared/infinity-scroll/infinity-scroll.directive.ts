@@ -17,7 +17,7 @@ export class InfinityScrollDirective {
     private borderObserver(elem: HTMLElement) {
         const currentScrollTop = elem.scrollTop;
         const scrollHeight = elem.scrollHeight;
-        const height = elem.getBoundingClientRect().height;
+        const height = elem.offsetHeight;
         const isScrollToBottom = this.lastScrollTop < currentScrollTop;
 
         const nearBottom = scrollHeight - (height + currentScrollTop) <= this.borderOffset;
