@@ -24,21 +24,28 @@ export class PopupHostComponent implements OnChanges {
     @Input() isOpened = false;
     @Output() isOpenedChange = new EventEmitter<boolean>();
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['template']) {
+    ngOnChanges({template}: SimpleChanges): void {
+        if (template) {
+            const IS_FIRST_CHANGE = template.firstChange;
+            const HAVE_CURRENT_VALUE = template.currentValue;
+            const HAVE_PREVIOUS_VALUE = template.previousValue;
+            const IS_OPENED = this.isOpened;
+
             if (
-                (changes['template'].firstChange !== true &&
-                    changes['template'].currentValue !== undefined &&
-                    changes['template'].previousValue !== undefined) ||
-                (changes['template'].firstChange === true && this.isOpened === true)
+                (IS_FIRST_CHANGE !== true &&
+                    HAVE_CURRENT_VALUE !== undefined &&
+                    HAVE_PREVIOUS_VALUE !== undefined) ||
+                (IS_FIRST_CHANGE === true && IS_OPENED === true)
             ) {
                 this.updateView();
-            } else if (
-                changes['template'].firstChange !== true &&
-                (changes['template'].currentValue === undefined ||
-                    changes['template'].previousValue === undefined)
+
+                return;
+            }
+
+            if (
+                IS_FIRST_CHANGE !== true &&
+                (HAVE_CURRENT_VALUE === undefined || HAVE_PREVIOUS_VALUE === undefined)
             ) {
-                this.isOpenedChange.emit(this.isOpened);
                 this.updateView();
             }
         }

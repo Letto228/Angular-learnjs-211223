@@ -45,20 +45,19 @@
 
 <!-- Switch template -->
 
-<app-popup-host
+<!-- <app-popup-host
     [template]="switchTemplate ? firstTemplatePopup : secondTemplatePopup"
     [isOpened]="true"
-></app-popup-host>
+></app-popup-host> -->
 
 <!-- or -->
 
 <!-- Close template -->
 
-<!-- <app-popup-host
+<app-popup-host
     [template]="!closeTemplate ? firstTemplatePopup : undefined"
-    [isOpened]="!closeTemplate"
-    (isOpenedChange)="(closeTemplate)"
-></app-popup-host> -->
+    [(isOpened)]="!closeTemplate"
+></app-popup-host>
 
 <ng-template #firstTemplatePopup>
     <h2>First</h2>
