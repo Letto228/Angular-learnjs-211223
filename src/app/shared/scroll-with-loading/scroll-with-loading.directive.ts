@@ -7,20 +7,23 @@ import {LoadDirection} from './load-direction.type';
 export class ScrollWithLoadingDirective {
     @HostListener('scroll')
     onScroll() {
-        const isScrollTop = this.elementRef.nativeElement.scrollTop <= this.borderOffset;
+        const {nativeElement} = this.elementRef;
+        const isScrollTop = nativeElement.scrollTop <= this.borderOffset;
 
         if (isScrollTop && this.loadDirection !== LoadDirection.top) {
             this.setLoadDirection(LoadDirection.top);
+
+            return;
         }
 
         const isScrollBottom =
-            this.elementRef.nativeElement.scrollHeight -
-                this.elementRef.nativeElement.scrollTop -
-                this.elementRef.nativeElement.clientHeight <=
+            nativeElement.scrollHeight - nativeElement.scrollTop - nativeElement.clientHeight <=
             this.borderOffset;
 
         if (isScrollBottom && this.loadDirection !== LoadDirection.bottom) {
             this.setLoadDirection(LoadDirection.bottom);
+
+            return;
         }
 
         if (!isScrollTop && !isScrollBottom && this.loadDirection !== LoadDirection.idle) {
