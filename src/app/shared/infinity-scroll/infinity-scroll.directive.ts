@@ -10,33 +10,32 @@ export class InfinityScrollDirective {
     private readonly borderOffset = 100;
     private lastScrollTop = 0;
 
-    @HostListener('scroll', ['$event', '$event.target']) onScroll(
-        event: MouseEvent,
-        elem: HTMLElement,
-    ) {
+    @HostListener('scroll', ['$event.target']) onScroll(elem: HTMLElement) {
         this.borderObserver(elem);
-        event.stopPropagation();
     }
 
     private borderObserver(elem: HTMLElement) {
-        if (elem) {
-            const CURRENT_SCROLL_TOP = elem.scrollTop;
-            const HEIGHT = elem.getBoundingClientRect().height;
-            const SCROLL_HEIGHT = elem.scrollHeight;
+        const currentScrollTop = elem.scrollTop;
+        const scrollHeight = elem.scrollHeight;
+        const height = elem.getBoundingClientRect().height;
+        const isScrollToBottom = this.lastScrollTop < currentScrollTop;
 
-            if (
-                SCROLL_HEIGHT - (HEIGHT + CURRENT_SCROLL_TOP) <= this.borderOffset &&
-                this.lastScrollTop < CURRENT_SCROLL_TOP
-            ) {
-                this.loadData.emit(LoadDirection.fromBottom);
-            } else if (
-                CURRENT_SCROLL_TOP <= this.borderOffset &&
-                this.lastScrollTop > CURRENT_SCROLL_TOP
-            ) {
-                this.loadData.emit(LoadDirection.fromTop);
-            }
+        const nearBottom = scrollHeight - (height + currentScrollTop) <= this.borderOffset;
 
-            this.lastScrollTop = CURRENT_SCROLL_TOP;
+        if (nearBottom && isScrollToBottom) {
+            this.loadData.emit(LoadDirection.fromBottom);
+
+            this.lastScrollTop = currentScrollTop;
+
+            return;
+        }
+
+        const nearTop = currentScrollTop <= this.borderOffset;
+
+        if (nearTop && !isScrollToBottom) {
+            this.loadData.emit(LoadDirection.fromTop);
+
+            this.lastScrollTop = currentScrollTop;
         }
     }
 }
