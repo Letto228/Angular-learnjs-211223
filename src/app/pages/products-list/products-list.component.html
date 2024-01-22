@@ -23,20 +23,38 @@
     <app-card class="card" [product]="productsFromNgIf[3]" (buy)="onProductBuy($event)"></app-card>
     <app-card class="card" [product]="productsFromNgIf[4]" (buy)="onProductBuy($event)"></app-card> -->
 
-    <app-card
-        *ngFor="
-            let product of productsFromNgIf;
-            trackBy: trackById;
-            let index = index;
-            let first = first;
-            let last = last;
-            let even = even;
-            let odd = odd
+    <!-- Раскомментрировать для ДЗ -->
+    <!-- <ng-container
+        *appPagination="
+            let productsGroup of products;
+            chankSize: 4;
+            let pageIndexes = pageIndexes;
+            let activeIndex = index;
+            let next = next;
+            let back = back;
+            let selectIndex = selectIndex
         "
-        class="card"
-        [product]="product"
-        (buy)="onProductBuy($event)"
-    ></app-card>
+    > -->
+    <div class="cards">
+        <app-card
+            *ngFor="
+                let product of productsFromNgIf;
+                trackBy: trackById;
+                let index = index;
+                let first = first;
+                let last = last;
+                let even = even;
+                let odd = odd
+            "
+            class="card"
+            [product]="product"
+            (buy)="onProductBuy($event)"
+        ></app-card>
+    </div>
+    <div class="pagination">
+        <!-- Add pagination control -->
+    </div>
+    <!-- </ng-container> -->
 </div>
 <!-- </ng-template> -->
 
