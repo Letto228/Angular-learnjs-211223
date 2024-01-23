@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {productMock} from '../../../shared/products/product.mock';
-import {IProduct} from '../../../shared/products/product.interface';
 
 @Component({
     selector: 'app-card',
@@ -8,7 +7,7 @@ import {IProduct} from '../../../shared/products/product.interface';
     styleUrls: ['./card.component.css'],
 })
 export class CardComponent {
-    readonly product: IProduct = productMock;
+    readonly product = productMock;
     readonly mainImageSrc = this.product.images[0].url;
 
     addToCard(event: MouseEvent | TouchEvent) {
