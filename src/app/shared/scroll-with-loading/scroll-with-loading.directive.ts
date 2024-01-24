@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Output} from '@angular/core';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 import {LoadDirection} from './load-direction.enum';
 
 @Directive({
@@ -9,13 +9,7 @@ export class ScrollWithLoadingDirective {
 
     private readonly borderOffsetTop = 100;
 
-    private get borderOffsetBottom(): number {
-        return this.elementRef.nativeElement.clientHeight - this.borderOffsetTop;
-    }
-
     private scrollPosBefore = 0;
-
-    constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 
     @HostListener('scroll', [
         '$event.target.scrollTop',
@@ -32,15 +26,20 @@ export class ScrollWithLoadingDirective {
             return;
         }
 
-        if (scrollTopOffset >= this.borderOffsetBottom && loadDirection === LoadDirection.Down) {
+        if (
+            scrollTopOffset >= this.getBorderOffsetBottom(clientHeight) &&
+            loadDirection === LoadDirection.Down
+        ) {
             this.loadData.emit(LoadDirection.Down);
         }
     }
 
+    private getBorderOffsetBottom(clientHeight: number): number {
+        return clientHeight - this.borderOffsetTop;
+    }
+
     getScrollTopOffset(scrollTop: number, scrollHeight: number, clientHeight: number) {
-        return (
-            (this.elementRef.nativeElement.clientHeight * scrollTop) / (scrollHeight - clientHeight)
-        );
+        return (clientHeight * scrollTop) / (scrollHeight - clientHeight);
     }
 
     getLoadDirection(scrollTop: number): LoadDirection {
