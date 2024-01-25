@@ -51,9 +51,9 @@
         <div class="pagination">
             <button type="button" (click)="back(); $event.stopPropagation()">назад</button>
             <div>
-                <span *ngFor="let groupNumber of productsGroup">
+                <!-- <span *ngFor="let pageIndex of pageIndexes">
                     <a href="" (click)="$event.preventDefault()">1</a>
-                </span>
+                </span> -->
             </div>
             <button type="button" (click)="next(); $event.stopPropagation()">вперед</button>
         </div>
