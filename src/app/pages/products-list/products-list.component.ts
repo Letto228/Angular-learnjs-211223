@@ -20,7 +20,7 @@ export class ProductsListComponent {
     constructor() {
         setTimeout(() => {
             this.productsStore = productsMock;
-        }, 3000);
+        }, 0);
         setTimeout(() => {
             // this.productsStore = [...productsMock];
             this.productsStore = productsMock.map(item => ({...item, feedbacksCount: 0}));
