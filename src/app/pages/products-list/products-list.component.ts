@@ -43,4 +43,9 @@ export class ProductsListComponent {
     // trackByFeedback(_: number, item: IProduct): IProduct['feedbacksCount'] {
     //     return item.feedbacksCount;
     // }
+
+    // onLoad(direction: LoadDirection) {
+    //     // eslint-disable-next-line no-console
+    //     console.log(`load ${direction}`);
+    // }
 }
