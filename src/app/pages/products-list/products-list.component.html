@@ -1,18 +1,15 @@
-<!-- <ng-template
+<ng-template
     let-productsFromNgIf="ngIf"
     let-toString="toString"
     [ngIf]="products"
     [ngIfElse]="loaderTemplate"
-> -->
-<!-- Раскомментировать div при выполнении ДЗ -->
-<!-- <div appScrollWithLoading class="scroll-container" (loadData)="onLoad($event)"> -->
-
-<!-- <div *ngIf="products; else: loaderTemplate; let productsFromNgIf = ngIf" class="scroll-container"> -->
-<!-- <div *ngIf="products; else: loaderTemplate; ngIf as productsFromNgIf" class="scroll-container"> -->
-<div *ngIf="products as productsFromNgIf; else loaderTemplate" class="scroll-container">
-    <!--
-    <ng-template [ngIf]="products" [ngIfElse]="loaderTemplate" let-productsFromNgIf="ngIf">
- -->
+>
+    <!-- Раскомментировать div при выполнении ДЗ -->
+    <!-- <div appScrollWithLoading class="scroll-container" (loadData)="onLoad($event)"> -->
+    <!-- <div *ngIf="products; else: loaderTemplate; let productsFromNgIf = ngIf" class="scroll-container">
+<div *ngIf="products; else: loaderTemplate; ngIf as productsFromNgIf" class="scroll-container"> -->
+    <!-- <div *ngIf="products as productsFromNgIf; else loaderTemplate" class="scroll-container"> -->
+    <!-- <ng-template [ngIf]="products" [ngIfElse]="loaderTemplate" let-productsFromNgIf="ngIf"> -->
 
     <!-- {{toString}} -->
     <!-- <ng-template [appDumpNgIf]="products" let-productsFromNgIf="appDumpNgIf" let-name="name"> -->
@@ -24,7 +21,7 @@
     <app-card class="card" [product]="productsFromNgIf[4]" (buy)="onProductBuy($event)"></app-card> -->
 
     <!-- Раскомментрировать для ДЗ -->
-    <!-- <ng-container
+    <ng-container
         *appPagination="
             let productsGroup of products;
             chankSize: 4;
@@ -34,29 +31,35 @@
             let back = back;
             let selectIndex = selectIndex
         "
-    > -->
-    <div class="cards">
-        <app-card
-            *ngFor="
-                let product of productsFromNgIf;
-                trackBy: trackById;
-                let index = index;
-                let first = first;
-                let last = last;
-                let even = even;
-                let odd = odd
-            "
-            class="card"
-            [product]="product"
-            (buy)="onProductBuy($event)"
-        ></app-card>
-    </div>
-    <div class="pagination">
-        <!-- Add pagination control -->
-    </div>
-    <!-- </ng-container> -->
-</div>
-<!-- </ng-template> -->
+    >
+        <div class="cards">
+            <app-card
+                *ngFor="
+                    let product of productsGroup;
+                    trackBy: trackById;
+                    let index = index;
+                    let first = first;
+                    let last = last;
+                    let even = even;
+                    let odd = odd
+                "
+                class="card"
+                [product]="product"
+                (buy)="onProductBuy($event)"
+            ></app-card>
+        </div>
+        <div class="pagination">
+            <button type="button" (click)="back(); $event.stopPropagation()">назад</button>
+            <div>
+                <span *ngFor="let groupNumber of productsGroup">
+                    <a href="" (click)="$event.preventDefault()">1</a>
+                </span>
+            </div>
+            <button type="button" (click)="next(); $event.stopPropagation()">вперед</button>
+        </div>
+    </ng-container>
+    <!-- </div> -->
+</ng-template>
 
 <ng-template #loaderTemplate>
     <mat-spinner></mat-spinner>
