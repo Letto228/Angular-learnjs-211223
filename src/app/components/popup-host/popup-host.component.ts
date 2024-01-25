@@ -19,31 +19,12 @@ export class PopupHostComponent implements OnChanges {
     @ViewChild('viewport', {read: ViewContainerRef, static: true})
     private readonly viewContainer: ViewContainerRef | undefined;
 
-    @Input() isOpened = false;
+    isOpened = false;
 
     ngOnChanges({template}: SimpleChanges): void {
-        if (template) {
-            const isFirstChange = template.firstChange === true;
-            const haveCurrentValue = template.currentValue !== undefined;
-            const havePreviousValue = template.previousValue !== undefined;
-            const isOpened = this.isOpened === true;
+        this.isOpened = !!template.currentValue; // для стилизации
 
-            const isSwitch =
-                (!isFirstChange && haveCurrentValue && havePreviousValue) ||
-                (isFirstChange && isOpened);
-
-            if (isSwitch) {
-                this.updateView();
-
-                return;
-            }
-
-            const isOpenAndClose = !isSwitch;
-
-            if (isOpenAndClose) {
-                this.updateView();
-            }
-        }
+        template && this.updateView();
     }
 
     private updateView() {
