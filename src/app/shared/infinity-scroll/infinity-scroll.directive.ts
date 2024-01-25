@@ -14,28 +14,22 @@ export class InfinityScrollDirective {
         this.borderObserver(elem);
     }
 
-    private borderObserver(elem: HTMLElement) {
-        const currentScrollTop = elem.scrollTop;
-        const scrollHeight = elem.scrollHeight;
-        const height = elem.offsetHeight;
-        const isScrollToBottom = this.lastScrollTop < currentScrollTop;
+    private borderObserver({scrollTop, scrollHeight, offsetHeight}: HTMLElement) {
+        const isScrollToBottom = this.lastScrollTop < scrollTop;
+        const nearBottom = scrollHeight - (offsetHeight + scrollTop) <= this.borderOffset;
 
-        const nearBottom = scrollHeight - (height + currentScrollTop) <= this.borderOffset;
+        this.lastScrollTop = scrollTop;
 
         if (nearBottom && isScrollToBottom) {
             this.loadData.emit(LoadDirection.fromBottom);
 
-            this.lastScrollTop = currentScrollTop;
-
             return;
         }
 
-        const nearTop = currentScrollTop <= this.borderOffset;
+        const nearTop = scrollTop <= this.borderOffset;
 
         if (nearTop && !isScrollToBottom) {
             this.loadData.emit(LoadDirection.fromTop);
-
-            this.lastScrollTop = currentScrollTop;
         }
     }
 }
