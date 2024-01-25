@@ -1,45 +1,51 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Output} from '@angular/core';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 import {LoadDirection} from './load-direction.type';
 
 @Directive({
     selector: '[appScrollWithLoading]',
 })
 export class ScrollWithLoadingDirective {
-    @HostListener('scroll')
-    onScroll() {
-        const {nativeElement} = this.elementRef;
-        const isScrollTop = nativeElement.scrollTop <= this.borderOffset;
-
-        if (isScrollTop && this.loadDirection !== LoadDirection.top) {
-            this.setLoadDirection(LoadDirection.top);
+    @HostListener('scroll', ['$event.target'])
+    onScroll(nativeElement: Element) {
+        if (this.isScrollTop(nativeElement)) {
+            this.setScrollState(LoadDirection.top);
 
             return;
         }
 
-        const isScrollBottom =
-            nativeElement.scrollHeight - nativeElement.scrollTop - nativeElement.clientHeight <=
-            this.borderOffset;
-
-        if (isScrollBottom && this.loadDirection !== LoadDirection.bottom) {
-            this.setLoadDirection(LoadDirection.bottom);
+        if (this.isScrollBottom(nativeElement)) {
+            this.setScrollState(LoadDirection.bottom);
 
             return;
         }
 
-        if (!isScrollTop && !isScrollBottom && this.loadDirection !== LoadDirection.idle) {
-            this.setLoadDirection(LoadDirection.idle);
-        }
+        this.setScrollState(LoadDirection.idle);
     }
 
     @Output() readonly loadData = new EventEmitter<LoadDirection>();
 
-    private loadDirection: LoadDirection = LoadDirection.idle;
+    private currentScrollState: LoadDirection = LoadDirection.idle;
+
     private readonly borderOffset = 100;
 
-    private setLoadDirection(value: LoadDirection) {
-        this.loadDirection = value;
-        this.loadData.emit(value);
+    private setScrollState(newState: LoadDirection) {
+        if (this.currentScrollState !== newState) {
+            this.currentScrollState = newState;
+            this.emit(this.currentScrollState);
+        }
     }
 
-    constructor(private readonly elementRef: ElementRef) {}
+    private emit(e: LoadDirection) {
+        if (e !== LoadDirection.idle) {
+            this.loadData.emit(e);
+        }
+    }
+
+    private isScrollTop({scrollTop}: Element) {
+        return scrollTop <= this.borderOffset;
+    }
+
+    private isScrollBottom({scrollHeight, scrollTop, clientHeight}: Element) {
+        return scrollHeight - scrollTop - clientHeight <= this.borderOffset;
+    }
 }
