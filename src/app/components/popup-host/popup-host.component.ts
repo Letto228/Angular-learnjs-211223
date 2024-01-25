@@ -6,8 +6,6 @@ import {
     ViewChild,
     OnChanges,
     SimpleChanges,
-    Output,
-    EventEmitter,
 } from '@angular/core';
 
 @Component({
@@ -22,18 +20,17 @@ export class PopupHostComponent implements OnChanges {
     private readonly viewContainer: ViewContainerRef | undefined;
 
     @Input() isOpened = false;
-    @Output() isOpenedChange = new EventEmitter<boolean>();
 
     ngOnChanges({template}: SimpleChanges): void {
         if (template) {
             const isFirstChange = template.firstChange === true;
             const haveCurrentValue = template.currentValue !== undefined;
             const havePreviousValue = template.previousValue !== undefined;
-            const IS_OPENED = this.isOpened === true;
+            const isOpened = this.isOpened === true;
 
             const isSwitch =
                 (!isFirstChange && haveCurrentValue && havePreviousValue) ||
-                (isFirstChange && IS_OPENED);
+                (isFirstChange && isOpened);
 
             if (isSwitch) {
                 this.updateView();

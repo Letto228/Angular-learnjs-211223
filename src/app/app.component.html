@@ -56,7 +56,7 @@
 
 <app-popup-host
     [template]="!closeTemplate ? firstTemplatePopup : undefined"
-    [(isOpened)]="!closeTemplate"
+    [isOpened]="!closeTemplate"
 ></app-popup-host>
 
 <ng-template #firstTemplatePopup>
