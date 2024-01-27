@@ -9,142 +9,136 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import {BehaviorSubject, Subject, filter, map, takeUntil} from 'rxjs';
-import {PaginationContext} from './pagination-context.interface';
+import {IPaginationContext} from './pagination-context.interface';
 
 @Directive({
     selector: '[appPagination]',
 })
-// implements OnInit, OnChanges, OnDestroy
-export class PaginationDirective<T> {
+export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
+    @Input() appPaginationOf: T[] | undefined | null;
+    @Input() appPaginationChankSize: number | undefined;
+
+    private readonly currentPageIndex$ = new BehaviorSubject<number>(0);
+    private readonly destroy$ = new Subject<void>();
+
+    private pageIndexes: number[] | undefined;
+
+    get shouldShowItems(): boolean {
+        return Boolean(this.appPaginationOf?.length);
+    }
+
     constructor(
         private readonly viewContainerRef: ViewContainerRef,
-        private readonly templateRef: TemplateRef<PaginationContext<T>>,
+        private readonly templateRef: TemplateRef<IPaginationContext<T>>,
     ) {}
-    // ngOnInit(): void {}
-    // ngOnChanges(changes: SimpleChanges): void {}
-    // ngOnDestroy(): void {}
-    //
-    //
-    //
-    //
-    // constructor(
-    //     private readonly viewContainerRef: ViewContainerRef,
-    //     private readonly templateRef: TemplateRef<PaginationContext<T>>,
-    // ) {}
 
-    // @Input() appPaginationOf: T[] | undefined | null;
-    // @Input() appPaginationChankSize: number | undefined;
+    ngOnChanges({appPaginationOf}: SimpleChanges): void {
+        if (appPaginationOf) {
+            this.updateView();
+        }
+    }
 
-    // private slisedAppPaginationOf: T[] | undefined | null;
-    // private begin = 0;
-    // private end = 0;
+    ngOnInit() {
+        this.getPageIndexes();
+        this.listenCurrentPageIndex();
+    }
 
-    // private readonly currentIndex$ = new BehaviorSubject<number>(0);
-    // private readonly destroy$ = new Subject<void>();
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
-    // get shouldShowItems(): boolean {
-    //     // this.begin = 0;
-    //     this.end += this.appPaginationChankSize!;
-    //     // this.appPaginationOf = this.appPaginationOf?.slice(begin, this.appPaginationChankSize);
-    //     // return !!slisedAppPaginationOf?.length;
-    //     this.slisedAppPaginationOf = this.appPaginationOf?.slice(this.begin, this.end);
-    //     this.begin += this.appPaginationChankSize!;
+    private updateView() {
+        if (this.shouldShowItems) {
+            this.currentPageIndex$.next(0);
 
-    //     return !!this.slisedAppPaginationOf?.length;
-    //     // return !!this.appPaginationOf?.length;
-    // }
+            return;
+        }
 
-    // ngOnInit(): void {
-    //     this.listenCurrentIndex();
-    // }
+        this.viewContainerRef.clear();
+    }
 
-    // ngOnChanges({appPaginationOf}: SimpleChanges): void {
-    //     if (appPaginationOf) {
-    //         this.updateView();
-    //     }
-    // }
+    private listenCurrentPageIndex() {
+        this.currentPageIndex$
+            .pipe(
+                filter(() => this.shouldShowItems),
+                map(index => this.getCurrentContext(index)),
+                takeUntil(this.destroy$),
+            )
+            .subscribe(context => {
+                this.viewContainerRef.clear();
+                this.viewContainerRef.createEmbeddedView(this.templateRef, context);
+            });
+    }
 
-    // ngOnDestroy(): void {
-    //     this.destroy$.next();
-    //     this.destroy$.complete();
-    // }
+    private getCurrentContext(index: number): IPaginationContext<T> {
+        const appPaginationOf = this.appPaginationOf as T[];
+        const groups = this.slicePaginationOf(appPaginationOf);
 
-    // private updateView() {
-    //     if (this.shouldShowItems) {
-    //         this.currentIndex$.next(0);
+        return {
+            appPaginationOf,
+            $implicit: groups[index],
+            next: () => {
+                this.next();
+            },
+            back: () => {
+                this.back();
+            },
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            pageIndexes: this.pageIndexes!,
+            activeIndex: index,
+            selectIndex: (pageIndex: number) => {
+                this.selectIndex(pageIndex);
+            },
+        };
+    }
 
-    //         return;
-    //     }
+    private next() {
+        const nextGroup = this.currentPageIndex$.value + 1;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const newGroup = nextGroup < this.pageIndexes!.length ? nextGroup : 0;
 
-    //     this.viewContainerRef.clear();
-    // }
+        newGroup && this.currentPageIndex$.next(newGroup);
+    }
 
-    // // private i = 0;
+    private back() {
+        const previousGroup = this.currentPageIndex$.value - 1;
+        const newGroup = previousGroup <= 0 ? 0 : previousGroup;
 
-    // private listenCurrentIndex() {
-    //     // this.pageIndex = Math.ceil(this.appPaginationOf!.length / this.appPaginationChankSize!);
-    //     this.currentIndex$
-    //         .pipe(
-    //             filter(index => {
-    //                 // this.i++;
-    //                 console.log(index, 'filter');
-    //                 // return this.shouldShowItems && this.i < 4;
-    //                 return this.shouldShowItems;
-    //             }),
-    //             // надо чета тут сделать
-    //             map(index => {
-    //                 console.log(index, 'map');
-    //                 // if (index <= this.appPaginationChankSize!) {
-    //                 //     console.log(index);
-    //                 //     // потыкатй вперед назад, вроде чета есть
-    //                 // }
-    //                 for (let i = 0; i < this.appPaginationOf!.length; i++) {
-    //                     return this.getCurrentIndex(index);
-    //                 }
+        this.currentPageIndex$.next(newGroup);
+    }
 
-    //                 return false;
+    private slicePaginationOf(appPaginationOf: T[]): T[][] {
+        let group: T[] | undefined;
+        let sliceBegin = 0;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        let sliceEnd = this.appPaginationChankSize!;
+        const groups: T[][] = [];
 
-    //                 // return;
-    //             }),
-    //             takeUntil(this.destroy$),
-    //         )
-    //         .subscribe(context => {
-    //             this.viewContainerRef.clear();
-    //             this.viewContainerRef.createEmbeddedView(this.templateRef, context!);
-    //         });
-    // }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        for (let i = 0; i < this.pageIndexes!.length; i++) {
+            group = appPaginationOf.slice(sliceBegin, sliceEnd);
+            sliceBegin = sliceEnd;
+            sliceEnd += this.appPaginationChankSize!;
+            groups.push(group);
+        }
 
-    // private getCurrentIndex(index: number): PaginationContext<T> {
-    //     // console.log(index, 'map');
-    //     const appPaginationOf = this.appPaginationOf as T[];
-    //     // надо чета тут сделать
-    //     return {
-    //         $implicit: appPaginationOf,
-    //         appPaginationOf,
-    //         next: () => {
-    //             this.next();
-    //         },
-    //         back: () => {
-    //             this.back();
-    //         },
-    //         pageIndexes: Math.ceil(this.appPaginationOf!.length / this.appPaginationChankSize!),
-    //         activeIndex: 0,
-    //         selectIndex: 0,
-    //     };
-    // }
+        return groups;
+    }
 
-    // private next() {
-    //     const nextIndex = this.currentIndex$.value + 1;
-    //     const newIndex = nextIndex < this.appPaginationOf!.length ? nextIndex : 0;
+    private getPageIndexes() {
+        if (this.appPaginationOf && this.appPaginationChankSize) {
+            const amountPages = Math.ceil(
+                this.appPaginationOf.length / this.appPaginationChankSize,
+            );
 
-    //     this.currentIndex$.next(newIndex);
-    // }
+            this.pageIndexes = new Array(amountPages).fill(0).map((_, i) => i);
+        }
 
-    // private back() {
-    //     const previousIndex = this.currentIndex$.value - 1;
-    //     const lastIndex = this.appPaginationOf!.length;
-    //     const newIndex = previousIndex < 0 ? lastIndex : previousIndex;
+        return this.pageIndexes;
+    }
 
-    //     this.currentIndex$.next(newIndex);
-    // }
+    private selectIndex(pageIndex: number) {
+        this.currentPageIndex$.next(pageIndex);
+    }
 }

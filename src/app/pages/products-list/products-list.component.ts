@@ -20,11 +20,11 @@ export class ProductsListComponent {
     constructor() {
         setTimeout(() => {
             this.productsStore = productsMock;
-        }, 3000);
-        setTimeout(() => {
-            // this.productsStore = [...productsMock];
-            this.productsStore = productsMock.map(item => ({...item, feedbacksCount: 0}));
-        }, 5000);
+        }, 500);
+        // setTimeout(() => {
+        //     // this.productsStore = [...productsMock];
+        //     this.productsStore = productsMock.map(item => ({...item, feedbacksCount: 0}));
+        // }, 5000);
     }
 
     onProductBuy(id: IProduct['_id']) {

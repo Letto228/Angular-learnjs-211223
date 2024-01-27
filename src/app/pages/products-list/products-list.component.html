@@ -24,9 +24,9 @@
     <ng-container
         *appPagination="
             let productsGroup of products;
-            chankSize: 4;
+            chankSize: 2;
             let pageIndexes = pageIndexes;
-            let activeIndex = index;
+            let activeIndex = activeIndex;
             let next = next;
             let back = back;
             let selectIndex = selectIndex
@@ -51,9 +51,16 @@
         <div class="pagination">
             <button type="button" (click)="back(); $event.stopPropagation()">назад</button>
             <div>
-                <!-- <span *ngFor="let pageIndex of pageIndexes">
-                    <a href="" (click)="$event.preventDefault()">1</a>
-                </span> -->
+                <span>
+                    <button
+                        *ngFor="let pageIndex of pageIndexes"
+                        type="button"
+                        [ngClass]="{'active-page': pageIndex === activeIndex}"
+                        (click)="selectIndex(pageIndex)"
+                    >
+                        {{ pageIndex + 1 }}
+                    </button>
+                </span>
             </div>
             <button type="button" (click)="next(); $event.stopPropagation()">вперед</button>
         </div>

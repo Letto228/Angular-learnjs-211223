@@ -1,9 +1,9 @@
-export interface PaginationContext<T> {
+export interface IPaginationContext<T> {
     $implicit: T[];
     appPaginationOf: T[];
+    pageIndexes: number[];
+    activeIndex: number;
     next: () => void;
     back: () => void;
-    pageIndexes: number;
-    activeIndex: number;
-    selectIndex: number;
+    selectIndex: (pageIndex: number) => void;
 }
