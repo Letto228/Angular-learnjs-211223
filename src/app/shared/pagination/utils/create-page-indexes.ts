@@ -7,7 +7,3 @@ export function createPageIndexes(arrowLength: number, chankSize: number): numbe
 
     return Array.from(new Array(pageIndexesLength), (_, index) => index);
 }
-
-export function sliceGroup<T>(arr: T[], currentIndex: number, chankSize: number): T[] {
-    return arr.slice(currentIndex * chankSize, currentIndex * chankSize + chankSize);
-}

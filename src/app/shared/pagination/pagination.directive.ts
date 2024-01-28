@@ -1,7 +1,8 @@
 import {Directive, Input, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
 import {BehaviorSubject, Subject, filter, map, takeUntil} from 'rxjs';
 import {PaginationContext} from './pagination-context.interface';
-import {createPageIndexes, sliceGroup} from './utils';
+import {createPageIndexes} from './utils/create-page-indexes';
+import {sliceGroup} from './utils/slice-group';
 
 @Directive({
     selector: '[appPagination]',
