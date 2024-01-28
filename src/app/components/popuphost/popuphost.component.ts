@@ -7,14 +7,14 @@ import {Component, Input, TemplateRef, ViewChild, ViewContainerRef} from '@angul
 })
 export class PopupHostComponent {
     @Input() set template(template: TemplateRef<unknown> | null) {
-        this.isTemplateSet = template !== null;
+        this.isTemplateSet = Boolean(template);
 
         if (template) {
             this.updateTemplate(template);
         }
     }
 
-    @ViewChild('viewport', {read: ViewContainerRef})
+    @ViewChild('viewport', {read: ViewContainerRef, static: true})
     private readonly viewportViewContainerRef: ViewContainerRef | null = null;
 
     private updateTemplate(template: TemplateRef<unknown>) {
