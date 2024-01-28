@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Output} from '@angular/core';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 import {LoadDirection} from './scroll-with-loading.interface';
 
 @Directive({
@@ -9,20 +9,22 @@ export class AppScrollWithLoadingDirective {
 
     private readonly borderOffset = 100;
     private tempScrollTop = 0;
-    constructor(private readonly el: ElementRef) {}
 
     @HostListener('scroll', ['$event.target'])
-    onScroll({scrollTop, scrollHeight}: HTMLElement): void {
-        const scrollBottom = scrollTop + window.innerHeight;
+    onScroll({scrollTop, scrollHeight, clientHeight}: HTMLElement): void {
+        const isScrollToTop = this.tempScrollTop > scrollTop;
+        const isNearTop = scrollTop >= this.borderOffset;
 
-        if (scrollTop > this.tempScrollTop) {
-            if (scrollBottom >= scrollHeight - this.borderOffset) {
-                this.loadData.emit(LoadDirection.Down);
-            }
-        } else if (scrollTop < this.tempScrollTop) {
-            if (scrollTop <= this.borderOffset) {
-                this.loadData.emit(LoadDirection.Up);
-            }
+        if (isScrollToTop && isNearTop) {
+            this.loadData.emit(LoadDirection.Up);
+
+            return;
+        }
+
+        const isNearBottom = scrollTop <= scrollHeight - clientHeight - this.borderOffset;
+
+        if (!isScrollToTop && isNearBottom) {
+            this.loadData.emit(LoadDirection.Down);
         }
 
         this.tempScrollTop = scrollTop;
