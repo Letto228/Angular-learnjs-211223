@@ -24,37 +24,46 @@
     <app-card class="card" [product]="productsFromNgIf[4]" (buy)="onProductBuy($event)"></app-card> -->
 
     <!-- Раскомментрировать для ДЗ -->
-    <!-- <ng-container
+    <ng-container
         *appPagination="
-            let productsGroup of products;
-            chankSize: 4;
+            let productsGroup of productsFromNgIf;
+            chankSize: 1;
+            let chankSize = chankSize;
             let pageIndexes = pageIndexes;
             let activeIndex = index;
             let next = next;
             let back = back;
-            let selectIndex = selectIndex
+            let selectIndex = selectIndex;
+            let selectChankSize = selectChankSize
         "
-    > -->
-    <div class="cards">
-        <app-card
-            *ngFor="
-                let product of productsFromNgIf;
-                trackBy: trackById;
-                let index = index;
-                let first = first;
-                let last = last;
-                let even = even;
-                let odd = odd
-            "
-            class="card"
-            [product]="product"
-            (buy)="onProductBuy($event)"
-        ></app-card>
-    </div>
-    <div class="pagination">
-        <!-- Add pagination control -->
-    </div>
-    <!-- </ng-container> -->
+    >
+        <div class="cards">
+            <app-card
+                *ngFor="
+                    let product of productsGroup;
+                    trackBy: trackById;
+                    let index = index;
+                    let first = first;
+                    let last = last;
+                    let even = even;
+                    let odd = odd
+                "
+                class="card"
+                [product]="product"
+                (buy)="onProductBuy($event)"
+            ></app-card>
+        </div>
+        <div class="pagination">
+            <mat-paginator
+                aria-label="Select page"
+                [length]="pageIndexes.length"
+                [pageSize]="chankSize"
+                [pageSizeOptions]="[1, 5, 10, 30, 50]"
+                [pageIndex]="activeIndex"
+                (page)="selectIndex($event.pageIndex); selectChankSize($event.pageSize)"
+            ></mat-paginator>
+        </div>
+    </ng-container>
 </div>
 <!-- </ng-template> -->
 
