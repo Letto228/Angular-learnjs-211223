@@ -23,7 +23,9 @@ export class ProductsListComponent {
         }, 0);
         setTimeout(() => {
             // this.productsStore = [...productsMock];
-            this.productsStore = productsMock.map(item => ({...item, feedbacksCount: 0}));
+
+            this.productsStore = [...productsMock, ...productsMock];
+            // this.productsStore = null;
         }, 5000);
     }
 

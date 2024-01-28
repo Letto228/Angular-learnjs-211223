@@ -1,4 +1,12 @@
-import {Directive, Input, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
+import {
+    Directive,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+    TemplateRef,
+    ViewContainerRef,
+} from '@angular/core';
 import {BehaviorSubject, Subject, filter, map, takeUntil} from 'rxjs';
 import {PaginationContext} from './pagination-context.interface';
 import {createPageIndexes} from './utils/create-page-indexes';
@@ -7,7 +15,7 @@ import {sliceGroup} from './utils/slice-group';
 @Directive({
     selector: '[appPagination]',
 })
-export class PaginationDirective<T> implements OnInit {
+export class PaginationDirective<T> implements OnInit, OnChanges {
     @Input() appPaginationOf: T[] | undefined | null;
     @Input() appPaginationChankSize = 0;
     private readonly currentIndex$ = new BehaviorSubject<number>(0);
@@ -18,6 +26,32 @@ export class PaginationDirective<T> implements OnInit {
         private readonly viewContainerRef: ViewContainerRef,
         private readonly templateRef: TemplateRef<PaginationContext<T>>,
     ) {}
+
+    ngOnChanges({appPaginationOf}: SimpleChanges): void {
+        const {currentValue, previousValue} = appPaginationOf;
+
+        if (currentValue?.length !== previousValue?.length) {
+            this.updatePageIndexes();
+        }
+
+        if (appPaginationOf) {
+            this.updateView();
+        }
+    }
+
+    private updatePageIndexes(): void {
+        this.setPageIndexes();
+    }
+
+    private updateView(): void {
+        if (this.shouldShowItems) {
+            this.currentIndex$.next(0);
+
+            return;
+        }
+
+        this.viewContainerRef.clear();
+    }
 
     private setPageIndexes(): void {
         if (!this.appPaginationOf || !this.appPaginationOf.length) {
