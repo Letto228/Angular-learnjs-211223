@@ -67,6 +67,7 @@
         "karma-jasmine": "~5.1.0",
         "karma-jasmine-html-reporter": "~2.1.0",
         "lint-staged": "^15.2.0",
+        "lodash": "^4.17.21",
         "prettier": "^2.8.8",
         "prettier-plugin-organize-attributes": "^0.0.5",
         "typescript": "~5.1.3"

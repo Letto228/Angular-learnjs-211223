@@ -24,7 +24,7 @@
     <ng-container
         *appPagination="
             let productsGroup of products;
-            chankSize: 2;
+            chunkSize: 4;
             let pageIndexes = pageIndexes;
             let activeIndex = activeIndex;
             let next = next;
@@ -48,14 +48,14 @@
                 (buy)="onProductBuy($event)"
             ></app-card>
         </div>
-        <div class="pagination">
+        <div *ngIf="productsGroup" class="pagination">
             <button type="button" (click)="back(); $event.stopPropagation()">назад</button>
             <div>
                 <span>
                     <button
                         *ngFor="let pageIndex of pageIndexes"
                         type="button"
-                        [ngClass]="{'active-page': pageIndex === activeIndex}"
+                        [class.active-page]="pageIndex === activeIndex"
                         (click)="selectIndex(pageIndex)"
                     >
                         {{ pageIndex + 1 }}

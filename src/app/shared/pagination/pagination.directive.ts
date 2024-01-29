@@ -9,19 +9,21 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import {BehaviorSubject, Subject, filter, map, takeUntil} from 'rxjs';
+import {chunk} from 'lodash';
 import {IPaginationContext} from './pagination-context.interface';
 
 @Directive({
     selector: '[appPagination]',
 })
 export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
-    @Input() appPaginationOf: T[] | undefined | null;
-    @Input() appPaginationChankSize: number | undefined;
+    @Input({required: true}) appPaginationOf: T[] | undefined | null;
+    @Input({required: true}) appPaginationChunkSize: number | undefined;
 
     private readonly currentPageIndex$ = new BehaviorSubject<number>(0);
     private readonly destroy$ = new Subject<void>();
 
     private pageIndexes: number[] | undefined;
+    private pagesGroups: T[][] = [];
 
     get shouldShowItems(): boolean {
         return Boolean(this.appPaginationOf?.length);
@@ -32,13 +34,14 @@ export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
         private readonly templateRef: TemplateRef<IPaginationContext<T>>,
     ) {}
 
-    ngOnChanges({appPaginationOf}: SimpleChanges): void {
-        if (appPaginationOf) {
+    ngOnChanges({appPaginationOf, appPaginationChunkSize}: SimpleChanges): void {
+        if (appPaginationOf && appPaginationChunkSize) {
             this.updateView();
         }
     }
 
     ngOnInit() {
+        this.pagesGroups = chunk(this.appPaginationOf, this.appPaginationChunkSize);
         this.getPageIndexes();
         this.listenCurrentPageIndex();
     }
@@ -73,11 +76,10 @@ export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
 
     private getCurrentContext(index: number): IPaginationContext<T> {
         const appPaginationOf = this.appPaginationOf as T[];
-        const groups = this.slicePaginationOf(appPaginationOf);
 
         return {
             appPaginationOf,
-            $implicit: groups[index],
+            $implicit: this.pagesGroups[index],
             next: () => {
                 this.next();
             },
@@ -108,32 +110,8 @@ export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
         this.currentPageIndex$.next(newGroup);
     }
 
-    private slicePaginationOf(appPaginationOf: T[]): T[][] {
-        let group: T[] | undefined;
-        let sliceBegin = 0;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        let sliceEnd = this.appPaginationChankSize!;
-        const groups: T[][] = [];
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        for (let i = 0; i < this.pageIndexes!.length; i++) {
-            group = appPaginationOf.slice(sliceBegin, sliceEnd);
-            sliceBegin = sliceEnd;
-            sliceEnd += this.appPaginationChankSize!;
-            groups.push(group);
-        }
-
-        return groups;
-    }
-
     private getPageIndexes() {
-        if (this.appPaginationOf && this.appPaginationChankSize) {
-            const amountPages = Math.ceil(
-                this.appPaginationOf.length / this.appPaginationChankSize,
-            );
-
-            this.pageIndexes = new Array(amountPages).fill(0).map((_, i) => i);
-        }
+        this.pageIndexes = new Array(this.pagesGroups.length).fill(0).map((_, i) => i);
 
         return this.pageIndexes;
     }
