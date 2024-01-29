@@ -7,22 +7,30 @@ import {LoadDirection} from '../load-direction/load-direction.enum';
 export class ScrollWithLoadingDirective {
     @Output() readonly loadData = new EventEmitter<LoadDirection>();
 
-    @HostListener('scroll', ['$event.target.offsetHeight', '$event.target.scrollTop'])
-    onScroll(offsetHeight: number, scrollTop: number) {
-        const top = scrollTop;
-        const offsetBottom = offsetHeight - this.borderOffset;
+    @HostListener('scroll', [
+        '$event.target.scrollHeight',
+        '$event.target.scrollTop',
+        '$event.target.offsetHeight',
+    ])
+    onScroll(scrollHeight: number, scrollTop: number, offsetHeight: number) {
+        const scroll = Math.round(scrollTop + offsetHeight);
+        const offset = scrollHeight - this.borderOffset;
+        const isScrollToTop = this.lastScrollTop > scrollTop;
+        const isNearTop = scrollTop < this.borderOffset;
 
-        if (this.lastScrollTop > top) {
-            if (scrollTop < this.borderOffset) {
-                this.loadData.emit(LoadDirection.ScrollTop);
-            }
-        } else if (this.lastScrollTop < top) {
-            if (scrollTop > offsetBottom) {
-                this.loadData.emit(LoadDirection.ScrollBottom);
-            }
+        if (isScrollToTop && isNearTop) {
+            this.loadData.emit(LoadDirection.ScrollTop);
+
+            return;
         }
 
-        this.lastScrollTop = top;
+        const isNearBottom = scroll > offset;
+
+        if (!isScrollToTop && isNearBottom) {
+            this.loadData.emit(LoadDirection.ScrollBottom);
+        }
+
+        this.lastScrollTop = scrollTop;
     }
 
     lastScrollTop = 0;
