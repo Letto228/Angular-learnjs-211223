@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
     styleUrls: ['./pagination-control.component.css'],
 })
 export class PaginationControlComponent {
-    @Input() pageIndexes: number[] | null = null;
+    @Input() pageIndexes: number[] = [];
     @Input() activeIndex: number | null = null;
 
     @Output() selectIndex = new EventEmitter<number>();
@@ -26,10 +26,14 @@ export class PaginationControlComponent {
     }
 
     isActiveIndex(index: number): boolean {
-        if (this.activeIndex === null) {
-            return false;
-        }
+        return this.activeIndex === null ? false : this.activeIndex === index;
+    }
 
-        return this.activeIndex === index;
+    get isNextDisabled() {
+        return this.pageIndexes.length - 1 === this.activeIndex;
+    }
+
+    get isBackDisabled() {
+        return this.activeIndex === 0;
     }
 }

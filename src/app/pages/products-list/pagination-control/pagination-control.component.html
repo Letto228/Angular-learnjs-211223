@@ -1,12 +1,14 @@
-<button class="control-buttons" (click)="onBack()">prev</button>
-<div class="pagination-indexes">
-    <button
-        *ngFor="let pageIndex of pageIndexes"
-        class="control-buttons"
-        [class.active-index]="isActiveIndex(pageIndex)"
-        (click)="onSelectIndex(pageIndex)"
-    >
-        {{ pageIndex + 1 }}
-    </button>
-</div>
-<button class="control-buttons" (click)="onNext()">next</button>
+<ng-template [ngIf]="pageIndexes.length">
+    <button class="control-buttons" [disabled]="isBackDisabled" (click)="onBack()">prev</button>
+    <div class="pagination-indexes">
+        <button
+            *ngFor="let pageIndex of pageIndexes"
+            class="control-buttons"
+            [class.active-index]="isActiveIndex(pageIndex)"
+            (click)="onSelectIndex(pageIndex)"
+        >
+            {{ pageIndex + 1 }}
+        </button>
+    </div>
+    <button class="control-buttons" [disabled]="isNextDisabled" (click)="onNext()">next</button>
+</ng-template>
