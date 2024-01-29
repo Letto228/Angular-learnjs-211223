@@ -20,7 +20,7 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
     @Input() appPaginationChankSize = 0;
     private readonly currentIndex$ = new BehaviorSubject<number>(0);
     private readonly destroy$ = new Subject<void>();
-    private pageIndexes: number[] | null = null;
+    private pageIndexes: number[] = [];
 
     constructor(
         private readonly viewContainerRef: ViewContainerRef,
@@ -54,15 +54,9 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
     }
 
     private setPageIndexes(): void {
-        if (!this.appPaginationOf || !this.appPaginationOf.length) {
-            this.pageIndexes = null;
-
-            return;
-        }
-
         this.pageIndexes = createPageIndexes(
-            this.appPaginationOf.length,
             this.appPaginationChankSize,
+            this.appPaginationOf?.length,
         );
     }
 
@@ -77,11 +71,12 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
 
     private getCurrentContext(index: number): PaginationContext<T> {
         const appPaginationOf = this.appPaginationOf as T[];
-        const currentSlice = sliceGroup(appPaginationOf, index, this.appPaginationChankSize);
+
+        const itemsGroup = sliceGroup(appPaginationOf, index, this.appPaginationChankSize);
 
         return {
             appPaginationOf,
-            $implicit: currentSlice,
+            $implicit: itemsGroup,
             next: this.next.bind(this),
             pageIndexes: this.pageIndexes,
             activeIndex: index,
@@ -95,22 +90,18 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
     }
 
     private next() {
-        if (this.pageIndexes) {
-            const nextIndex = this.currentIndex$.value + 1;
-            const newIndex = nextIndex < this.pageIndexes!.length ? nextIndex : 0;
+        const nextIndex = this.currentIndex$.value + 1;
+        const newIndex = nextIndex < this.pageIndexes.length ? nextIndex : 0;
 
-            this.currentIndex$.next(newIndex);
-        }
+        this.currentIndex$.next(newIndex);
     }
 
     private back() {
-        if (this.pageIndexes) {
-            const previousIndex = this.currentIndex$.value - 1;
-            const lastIndex = this.pageIndexes.length - 1;
-            const newIndex = previousIndex < 0 ? lastIndex : previousIndex;
+        const previousIndex = this.currentIndex$.value - 1;
+        const lastIndex = this.pageIndexes.length - 1;
+        const newIndex = previousIndex < 0 ? lastIndex : previousIndex;
 
-            this.currentIndex$.next(newIndex);
-        }
+        this.currentIndex$.next(newIndex);
     }
 
     private listenCurrentIndex() {
