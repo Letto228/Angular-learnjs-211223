@@ -34,5 +34,5 @@ export class ScrollWithLoadingDirective {
     }
 
     lastScrollTop = 0;
-    borderOffset = 100;
+    readonly borderOffset = 100;
 }
