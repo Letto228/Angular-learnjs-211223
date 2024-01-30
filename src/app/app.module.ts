@@ -11,6 +11,7 @@ import {SidenavModule} from './components/sidenav/sidenav.module';
 import {PopupHostModule} from './components/popup-host/popup-host.module';
 import {InsertShadowModule} from './shared/insert-shadow/insert-shadow.module';
 import {ProductsStoreService} from './shared/products/products-store.service';
+import {BASE_URL} from './shared/base-url/base-url.token';
 import {ProductsApiService} from './shared/products/products-api.service';
 
 @NgModule({
@@ -30,10 +31,10 @@ import {ProductsApiService} from './shared/products/products-api.service';
         // ...MatListModule.providers,
         ProductsApiService,
         ProductsStoreService,
-        // {
-        //     provide: BASE_URL,
-        //     useValue: '',
-        // },
+        {
+            provide: BASE_URL,
+            useValue: '',
+        },
         // {
         //     provide: ProductsStoreService, // token
         //     useClass: ProductsStoreService, // class

@@ -14,6 +14,7 @@ export class ProductsListComponent implements OnInit {
     readonly products$ = this.productsStoreService.products$;
 
     // for easy
+    // name = 'Планшет';
     name = 'Мышь';
 
     // for hard
