@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {LoadDirection} from 'src/app/shared/scroll-with-loading/load-direction.type';
+import {LoadDirectionEvent} from 'src/app/shared/scroll-with-loading/load-direction.type';
 import {IProduct} from '../../shared/products/product.interface';
 import {productsMock} from '../../shared/products/products.mock';
 
@@ -29,7 +29,7 @@ export class ProductsListComponent {
         console.log(id);
     }
 
-    onLoad(e: LoadDirection) {
+    onLoad(e: LoadDirectionEvent) {
         // eslint-disable-next-line no-console
         console.log(e);
     }
