@@ -13,8 +13,7 @@ export class CardComponent {
     onProductBuy(event: Event) {
         event.stopPropagation();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.buy.emit(this.product!._id);
+        this.buy.emit(this.product?._id);
     }
 
     isStarActive(starIndex: number): boolean {
