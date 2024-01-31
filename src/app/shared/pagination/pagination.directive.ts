@@ -27,20 +27,11 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
         private readonly templateRef: TemplateRef<PaginationContext<T>>,
     ) {}
 
-    ngOnChanges({appPaginationOf}: SimpleChanges): void {
-        const {currentValue, previousValue} = appPaginationOf;
-
-        if (currentValue?.length !== previousValue?.length) {
-            this.updatePageIndexes();
-        }
-
-        if (appPaginationOf) {
+    ngOnChanges({appPaginationOf, appPaginationChankSize}: SimpleChanges): void {
+        if (appPaginationOf || appPaginationChankSize) {
+            this.setPageIndexes();
             this.updateView();
         }
-    }
-
-    private updatePageIndexes(): void {
-        this.setPageIndexes();
     }
 
     private updateView(): void {
@@ -61,7 +52,6 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.setPageIndexes();
         this.listenCurrentIndex();
     }
 

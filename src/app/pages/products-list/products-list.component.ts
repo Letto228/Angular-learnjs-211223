@@ -9,6 +9,7 @@ import {productsMock} from '../../shared/products/products.mock';
 })
 export class ProductsListComponent {
     productsStore: IProduct[] | null = null;
+    chankSize = 4;
 
     get products(): IProduct[] | null {
         // eslint-disable-next-line no-console
