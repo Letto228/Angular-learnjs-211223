@@ -19,7 +19,7 @@ import {ArrayUtils} from '../utils/array.utils';
 })
 export class PaginationDirective<T> implements OnInit, OnChanges {
     @Input() appPaginationOf: T[] | undefined | null;
-    @Input() appPaginationChankSize: number | null = null;
+    @Input({required: true}) appPaginationChankSize!: number;
 
     private chanks: T[][] | null = null;
 
@@ -32,15 +32,15 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
     ) {}
 
     get shouldShowItems(): boolean {
-        return Boolean(this.appPaginationOf?.length) && (this.appPaginationChankSize ?? 0) > 0;
+        return Boolean(this.appPaginationOf?.length);
     }
 
-    ngOnChanges({appPaginationOf, chankSize}: SimpleChanges): void {
+    ngOnChanges({appPaginationOf, appPaginationChankSize}: SimpleChanges): void {
         if (appPaginationOf) {
             this.updateView();
         }
 
-        if (chankSize) {
+        if (appPaginationChankSize) {
             this.updateView();
         }
     }
@@ -48,7 +48,7 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
     updateView() {
         if (this.shouldShowItems) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.chanks = ArrayUtils.getChanks(this.appPaginationOf!, this.appPaginationChankSize!);
+            this.chanks = ArrayUtils.getChanks(this.appPaginationOf!, this.appPaginationChankSize);
             this.currentIndex$.next(0);
 
             return;
@@ -84,7 +84,7 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
             pageIndexes: chanks.map((_, i) => i),
             index,
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            chankSize: this.appPaginationChankSize!,
+            appPaginationChankSize: this.appPaginationChankSize,
             next: () => {
                 return this.next();
             },
@@ -94,25 +94,7 @@ export class PaginationDirective<T> implements OnInit, OnChanges {
             selectIndex: (i: number) => {
                 return this.selectIndex(i);
             },
-            selectChankSize: (chankSize: number) => {
-                return this.selectChankSize(chankSize);
-            },
         };
-    }
-
-    selectChankSize(chankSize: number): void {
-        if (chankSize === this.appPaginationChankSize) {
-            return;
-        }
-
-        if (chankSize <= 0) {
-            console.warn(`Invalid chank size selected: ${chankSize}`);
-
-            return;
-        }
-
-        this.appPaginationChankSize = chankSize;
-        this.currentIndex$.next(0);
     }
 
     selectIndex(index: number): void {

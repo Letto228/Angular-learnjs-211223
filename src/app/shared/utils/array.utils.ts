@@ -1,7 +1,7 @@
 export class ArrayUtils {
-    static getChanks<T>(input: T[], chankSize: number): T[][] {
-        if (chankSize <= 0) {
-            throw new Error('Chank size must be positive number');
+    static getChanks<T>(input: T[], chankSize: number | null): T[][] {
+        if (chankSize === null || chankSize <= 0) {
+            throw new Error(`Is not correct chank size: ${chankSize}`);
         }
 
         const chanks = new Array<T[]>();

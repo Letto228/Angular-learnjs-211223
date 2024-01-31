@@ -27,14 +27,12 @@
     <ng-container
         *appPagination="
             let productsGroup of productsFromNgIf;
-            chankSize: 1;
-            let chankSize = chankSize;
+            chankSize: 3;
             let pageIndexes = pageIndexes;
             let activeIndex = index;
             let next = next;
             let back = back;
-            let selectIndex = selectIndex;
-            let selectChankSize = selectChankSize
+            let selectIndex = selectIndex
         "
     >
         <div class="cards">
@@ -54,14 +52,22 @@
             ></app-card>
         </div>
         <div class="pagination">
-            <mat-paginator
-                aria-label="Select page"
-                [length]="pageIndexes.length"
-                [pageSize]="chankSize"
-                [pageSizeOptions]="[1, 5, 10, 30, 50]"
-                [pageIndex]="activeIndex"
-                (page)="selectIndex($event.pageIndex); selectChankSize($event.pageSize)"
-            ></mat-paginator>
+            <button mat-icon-button aria-label="Left page" (click)="back()">
+                <mat-icon>arrow_left</mat-icon>
+            </button>
+            <button
+                *ngFor="let pageIndex of pageIndexes"
+                mat-mini-fab
+                color="primary"
+                aria-label="Example icon button with a menu icon"
+                [color]="pageIndex === activeIndex ? 'accent' : 'primary'"
+                (click)="selectIndex(pageIndex)"
+            >
+                {{ pageIndex + 1 }}
+            </button>
+            <button mat-icon-button aria-label="Right page" (click)="next()">
+                <mat-icon>arrow_right</mat-icon>
+            </button>
         </div>
     </ng-container>
 </div>

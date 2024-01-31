@@ -3,9 +3,8 @@ export interface IPaginationContext<T> {
     appPaginationOf: T[];
     pageIndexes: number[];
     index: number;
-    chankSize: number;
+    appPaginationChankSize: number;
     next: () => void;
     back: () => void;
     selectIndex: (index: number) => void;
-    selectChankSize: (chankSize: number) => void;
 }
