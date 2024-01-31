@@ -31,6 +31,6 @@ export class ProductsListComponent {
 
     onLoad(direction: LoadDirection) {
         // eslint-disable-next-line no-console
-        console.log('onLoad', LoadDirection[direction]);
+        console.log('onLoad', direction);
     }
 }

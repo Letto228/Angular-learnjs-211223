@@ -11,26 +11,23 @@ export class ScrollWithLoadingDirective {
 
     private scrollPosBefore = 0;
 
-    @HostListener('scroll', [
-        '$event.target.scrollTop',
-        '$event.target.scrollHeight',
-        '$event.target.clientHeight',
-    ])
-    onScroll(scrollTopDiv: number, scrollHeight: number, clientHeight: number) {
-        const scrollTopOffset = this.getScrollTopOffset(scrollTopDiv, scrollHeight, clientHeight);
-        const loadDirection = this.getLoadDirection(scrollTopOffset);
+    @HostListener('scroll', ['$event.target'])
+    onScroll(target: HTMLElement) {
+        const loadDirection = this.getLoadDirection(target.scrollTop);
 
-        if (scrollTopOffset <= this.borderOffsetTop && loadDirection === LoadDirection.Up) {
-            this.loadData.emit(LoadDirection.Up);
+        this.scrollPosBefore = target.scrollTop;
+
+        if (target.scrollTop <= this.borderOffsetTop && loadDirection === LoadDirection.Before) {
+            this.loadData.emit(LoadDirection.Before);
 
             return;
         }
 
         if (
-            scrollTopOffset >= this.getBorderOffsetBottom(clientHeight) &&
-            loadDirection === LoadDirection.Down
+            target.scrollTop >= this.getBorderOffsetBottom(target.clientHeight) &&
+            loadDirection === LoadDirection.After
         ) {
-            this.loadData.emit(LoadDirection.Down);
+            this.loadData.emit(LoadDirection.After);
         }
     }
 
@@ -38,15 +35,7 @@ export class ScrollWithLoadingDirective {
         return clientHeight - this.borderOffsetTop;
     }
 
-    getScrollTopOffset(scrollTop: number, scrollHeight: number, clientHeight: number) {
-        return (clientHeight * scrollTop) / (scrollHeight - clientHeight);
-    }
-
     getLoadDirection(scrollTop: number): LoadDirection {
-        const diff = scrollTop - this.scrollPosBefore;
-
-        this.scrollPosBefore = scrollTop;
-
-        return diff > 0 ? LoadDirection.Down : LoadDirection.Up;
+        return scrollTop > this.scrollPosBefore ? LoadDirection.After : LoadDirection.Before;
     }
 }

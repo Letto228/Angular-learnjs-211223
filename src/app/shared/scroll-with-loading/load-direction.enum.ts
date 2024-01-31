@@ -1,4 +1,4 @@
 export enum LoadDirection {
-    Up = 1,
-    Down = 2,
+    Before = 'before',
+    After = 'after',
 }
