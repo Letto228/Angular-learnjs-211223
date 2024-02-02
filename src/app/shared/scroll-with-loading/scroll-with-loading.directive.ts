@@ -1,7 +1,9 @@
 import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
-import {BehaviorSubject, filter, map, pairwise} from 'rxjs';
+import {BehaviorSubject, Subject, filter, map, pairwise, takeUntil} from 'rxjs';
 import {ScrollState, LoadDirectionEvent} from './load-direction.type';
 import {scrollStateToLoadDirectionEventMap} from './utils/scroll-state-to-load-direction-event-map';
+import {isScrollReachedTopBorder} from './utils/is-scroll-reached-top-border';
+import {isScrollReachedBottomBorder} from './utils/is-scroll-reached-bottom-border';
 
 @Directive({
     selector: '[appScrollWithLoading]',
@@ -9,13 +11,13 @@ import {scrollStateToLoadDirectionEventMap} from './utils/scroll-state-to-load-d
 export class ScrollWithLoadingDirective {
     @HostListener('scroll', ['$event.target'])
     onScroll(nativeElement: Element) {
-        if (this.isScrollTop(nativeElement)) {
+        if (isScrollReachedTopBorder(nativeElement)) {
             this.scrollState$.next(ScrollState.top);
 
             return;
         }
 
-        if (this.isScrollBottom(nativeElement)) {
+        if (isScrollReachedBottomBorder(nativeElement)) {
             this.scrollState$.next(ScrollState.bottom);
 
             return;
@@ -26,35 +28,26 @@ export class ScrollWithLoadingDirective {
 
     @Output() readonly loadData = new EventEmitter<LoadDirectionEvent>();
     private readonly scrollState$ = new BehaviorSubject<ScrollState>(ScrollState.idle);
-
-    private readonly borderOffset = 100;
+    private readonly destroy$ = new Subject<void>();
 
     ngOnInit() {
         this.listenScrollState();
     }
 
-    private shouldEmitEvent([oldState, newState]: ScrollState[]) {
-        return newState !== ScrollState.idle && newState !== oldState;
+    private shouldEventEmit([previousState, currentState]: ScrollState[]) {
+        return currentState !== ScrollState.idle && currentState !== previousState;
     }
 
     private listenScrollState() {
         this.scrollState$
             .pipe(
                 pairwise(),
-                filter(e => this.shouldEmitEvent(e)),
-                map(([_, s]) => s),
-                // takeUntil(this.destroy$),
+                filter(e => this.shouldEventEmit(e)),
+                map(([_, scrollState]) => scrollStateToLoadDirectionEventMap[scrollState]),
+                takeUntil(this.destroy$),
             )
-            .subscribe(state => {
-                this.loadData.emit(scrollStateToLoadDirectionEventMap[state]);
+            .subscribe(loadDirectionEvent => {
+                this.loadData.emit(loadDirectionEvent);
             });
-    }
-
-    private isScrollTop({scrollTop}: Element) {
-        return scrollTop <= this.borderOffset;
-    }
-
-    private isScrollBottom({scrollHeight, scrollTop, clientHeight}: Element) {
-        return scrollHeight - scrollTop - clientHeight <= this.borderOffset;
     }
 }
