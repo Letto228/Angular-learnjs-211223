@@ -14,8 +14,8 @@ export class ProductsListComponent implements OnInit {
     readonly products$ = this.productsStoreService.products$;
 
     // for easy
-    // name = 'Планшет';
-    name = 'Мышь';
+    name = 'Планшет';
+    // name = 'Мышь';
 
     // for hard
     readonly propertyName = 'feedbacksCount' as const; // keyof IProduct

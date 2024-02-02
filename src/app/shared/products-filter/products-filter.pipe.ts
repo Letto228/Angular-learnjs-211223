@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class ProductsFilterPipe<T extends {name?: string}> implements PipeTransform {
     transform(products: T[], searchName: string): T[] {
         return products.filter(product => {
-            if (!!product.name === false) {
+            if (!product.name) {
                 return;
             }
 
