@@ -23,7 +23,7 @@ export class PopupHostComponent implements OnInit, OnDestroy {
     @ViewChild('container', {read: ViewContainerRef, static: true})
     container: ViewContainerRef | null = null;
 
-    constructor(private readonly popupHostService: PopupHostService) {}
+    constructor(readonly popupHostService: PopupHostService) {}
 
     ngOnInit(): void {
         this.template$.pipe(takeUntil(this.destroy$)).subscribe(view => {

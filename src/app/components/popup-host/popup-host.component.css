@@ -38,3 +38,7 @@
     border-radius: 8px;
     background-color: #fff;
 }
+
+.svg {
+    enable-background: new 0 0 512 512;
+}
