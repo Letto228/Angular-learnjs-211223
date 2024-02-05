@@ -34,6 +34,11 @@ export class ScrollWithLoadingDirective {
         this.listenScrollState();
     }
 
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
     private shouldEventEmit([previousState, currentState]: ScrollState[]) {
         return currentState !== ScrollState.idle && currentState !== previousState;
     }
