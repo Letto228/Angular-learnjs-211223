@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {LoadDirection} from 'src/app/shared/scroll-with-loading/enum/load-direction';
 import {IProduct} from '../../shared/products/product.interface';
 import {productsMock} from '../../shared/products/products.mock';
 
@@ -26,5 +27,10 @@ export class ProductsListComponent {
     onProductBuy(id: IProduct['_id']) {
         // eslint-disable-next-line no-console
         console.log(id);
+    }
+
+    onLoad(direction: LoadDirection) {
+        // eslint-disable-next-line no-console
+        console.log(direction);
     }
 }
