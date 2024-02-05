@@ -15,7 +15,7 @@ export class PopupHostComponent {
         }
     }
 
-    @ViewChild('popupViewPort', {read: ViewContainerRef})
+    @ViewChild('popupViewPort', {read: ViewContainerRef, static: true})
     protected readonly popupViewContainer?: ViewContainerRef;
 
     protected get shouldHideContainer(): boolean {
