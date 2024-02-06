@@ -25,7 +25,7 @@ export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
     private pageIndexes: number[] | undefined;
     private pagesGroups: T[][] = [];
 
-    get shouldShowItems(): boolean {
+    private get shouldShowItems(): boolean {
         return Boolean(this.appPaginationOf?.length);
     }
 
@@ -36,13 +36,13 @@ export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
 
     ngOnChanges({appPaginationOf, appPaginationChunkSize}: SimpleChanges): void {
         if (appPaginationOf && appPaginationChunkSize) {
+            this.pagesGroups = chunk(this.appPaginationOf, this.appPaginationChunkSize);
+            this.updatePageIndexes();
             this.updateView();
         }
     }
 
     ngOnInit() {
-        this.pagesGroups = chunk(this.appPaginationOf, this.appPaginationChunkSize);
-        this.getPageIndexes();
         this.listenCurrentPageIndex();
     }
 
@@ -110,10 +110,8 @@ export class PaginationDirective<T> implements OnChanges, OnInit, OnDestroy {
         this.currentPageIndex$.next(newGroup);
     }
 
-    private getPageIndexes() {
+    private updatePageIndexes() {
         this.pageIndexes = new Array(this.pagesGroups.length).fill(0).map((_, i) => i);
-
-        return this.pageIndexes;
     }
 
     private selectIndex(pageIndex: number) {
