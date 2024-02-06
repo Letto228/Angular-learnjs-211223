@@ -20,8 +20,6 @@ export class ScrollWithLoadingDirective {
 
         if (isScrollToTop && isNearTop) {
             this.loadData.emit(LoadDirection.ScrollTop);
-
-            return;
         }
 
         const isNearBottom = scroll > offset;
