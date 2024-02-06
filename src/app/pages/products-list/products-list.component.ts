@@ -11,8 +11,8 @@ import {ProductsStoreService} from '../../shared/products/products-store.service
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsListComponent {
-    readonly products$ = this.activatedRoute.queryParams.pipe(
-        map(queryParams => queryParams.subCat),
+    readonly products$ = this.activatedRoute.queryParamMap.pipe(
+        map(queryParamMap => queryParamMap.get('subCat')),
         tap(subcategoryId => {
             this.productsStoreService.loadProducts(subcategoryId);
         }),
