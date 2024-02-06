@@ -1,3 +1,24 @@
-<div class="content-wrapper">
-    <ng-container *ngTemplateOutlet="template"></ng-container>
+<div
+    *ngIf="popupService.popupData$ | async as popupData"
+    class="popup-wrapper"
+    [class.popup-wrapper--visible]="popupData.template"
+>
+    <div class="popup-content">
+        <button
+            mat-icon-button
+            aria-label="Close popup button"
+            class="close-button"
+            (click)="onCloseClick()"
+        >
+            <mat-icon>close</mat-icon>
+        </button>
+        <ng-container *ngIf="popupData.context; else withoutContext">
+            <ng-container
+                *ngTemplateOutlet="popupData.template; context: popupData.context"
+            ></ng-container>
+        </ng-container>
+        <ng-template #withoutContext>
+            <ng-container *ngTemplateOutlet="popupData.template; context: null"></ng-container>
+        </ng-template>
+    </div>
 </div>

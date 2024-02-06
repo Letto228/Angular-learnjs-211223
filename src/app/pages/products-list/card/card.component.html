@@ -31,3 +31,7 @@
         <button mat-button [disabled]="!this.product" (click)="onProductBuy($event)">Buy</button>
     </mat-card-actions>
 </mat-card>
+
+<ng-template #popupTemplate let-name="name">
+    <p>Будет произведена покупка товара: {{ name }}</p>
+</ng-template>

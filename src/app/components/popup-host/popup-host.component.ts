@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component, HostBinding, Input, TemplateRef} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {PopupHostService} from './popup-host.service';
 
 @Component({
     selector: 'app-popup-host',
@@ -7,14 +8,9 @@ import {ChangeDetectionStrategy, Component, HostBinding, Input, TemplateRef} fro
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupHostComponent {
-    @Input() template: TemplateRef<unknown> | null = null;
+    readonly popupService = inject(PopupHostService);
 
-    @HostBinding('class.empty')
-    get isTemplateNullable(): boolean {
-        return !this.template;
+    onCloseClick() {
+        this.popupService.setTemplate(null);
     }
-
-    // @Input()
-    // @HostBinding('class.view')
-    // template: TemplateRef<unknown> | null = null;
 }
