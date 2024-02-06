@@ -12,6 +12,8 @@
                 mat-button
                 hideToggle
                 class="sub-catigory"
+                [routerLink]="['products-list']"
+                [queryParams]="{subCat: subCategory._id}"
             >
                 {{ subCategory.name }}
             </button>
