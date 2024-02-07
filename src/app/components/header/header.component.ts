@@ -27,7 +27,9 @@ export class HeaderComponent {
     }
 
     openPopup(template: TemplateRef<{$implicit?: string}>) {
-        this.popupHostService.openPopup(template, {$implicit: this.applicationConfig?.title});
+        const context = {$implicit: this.applicationConfig?.title};
+
+        this.popupHostService.openPopup({template, context});
     }
 
     closePopup() {
