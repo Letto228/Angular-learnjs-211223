@@ -1,6 +1,9 @@
 export interface PaginationContext<T> {
-    $implicit: T;
-    appCarouselOf: T[];
+    $implicit: T[];
+    appPaginationOf: T[];
+    selectIndex: number;
+    pageIndex: number[];
     next: () => void;
     back: () => void;
+    selectCard: () => void;
 }
