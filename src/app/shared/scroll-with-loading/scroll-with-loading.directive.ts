@@ -11,8 +11,7 @@ export class ScrollWithLoadingDirective {
     private currentScrollTop = 0;
 
     @HostListener('scroll', ['$event.target'])
-    protected onScroll(target: HTMLElement): void {
-        const {scrollHeight, scrollTop, clientHeight} = target;
+    private onScroll({scrollHeight, scrollTop, clientHeight}: HTMLElement): void {
         const scrollBottom = scrollHeight - scrollTop - clientHeight;
         const OFFSET = 100;
         const currentScrollTop = this.currentScrollTop;
