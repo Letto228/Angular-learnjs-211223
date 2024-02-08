@@ -19,9 +19,9 @@ export class ProductsListComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.activatedRoute.params.subscribe(params => {
+        this.activatedRoute.paramMap.subscribe(paramsMap => {
             // eslint-disable-next-line dot-notation
-            const subCategoryId = params?.['subCategoryId'];
+            const subCategoryId = paramsMap.get('subCategoryId');
 
             this.productsStoreService.loadProducts(subCategoryId);
         });
