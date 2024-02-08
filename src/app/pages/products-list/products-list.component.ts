@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Product} from '../../shared/products/product.interface';
 import {ProductsStoreService} from '../../shared/products/products-store.service';
 
@@ -15,10 +15,16 @@ export class ProductsListComponent implements OnInit {
     constructor(
         private readonly productsStoreService: ProductsStoreService,
         private readonly router: Router,
+        private readonly activatedRoute: ActivatedRoute,
     ) {}
 
     ngOnInit(): void {
-        this.productsStoreService.loadProducts();
+        this.activatedRoute.params.subscribe(params => {
+            // eslint-disable-next-line dot-notation
+            const subCategoryId = params?.['subCategoryId'];
+
+            this.productsStoreService.loadProducts(subCategoryId);
+        });
     }
 
     trackById(_: number, item: Product): Product['_id'] {
