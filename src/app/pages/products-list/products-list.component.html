@@ -27,14 +27,12 @@
     <ng-container
         *appPagination="
             let productsGroup of products;
-            let appPaginationOf = appPaginationOf;
-            chankSize: 4;
+            chankSize: 3;
             let pageIndex = pageIndex;
-            let productsFromNgIf = productsFromNgIf;
             let activeIndex = index;
             let next = next;
             let back = back;
-            let selectCard = selectCard;
+            let selectPage = selectPage;
             let selectIndex = selectIndex
         "
     >
@@ -75,8 +73,8 @@
                 color="primary"
                 type="button"
                 class="pagination__button"
-                [ngClass]="{'is-active': selectIndex === index}"
-                (click)="selectCard(index); $event.stopPropagation()"
+                [class.is-active]="selectIndex === index"
+                (click)="selectPage(index); $event.stopPropagation()"
             >
                 {{ index + 1 }}
             </button>

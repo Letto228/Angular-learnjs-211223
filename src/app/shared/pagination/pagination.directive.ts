@@ -85,7 +85,7 @@ export class PaginationDirective<T> implements OnInit, OnChanges, OnDestroy {
             back: () => {
                 this.back();
             },
-            selectCard: this.selectCard.bind(this),
+            selectPage: this.selectCard.bind(this),
         };
     }
 
