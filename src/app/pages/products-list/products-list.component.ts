@@ -21,14 +21,18 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.activatedRoute.paramMap.pipe(takeUntil(this.destroy$)).subscribe(paramMap => {
-            this.productsStoreService.loadProducts(paramMap.get('id'));
-        });
+        this.loadProductsById();
     }
 
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    loadProductsById() {
+        this.activatedRoute.paramMap.pipe(takeUntil(this.destroy$)).subscribe(paramMap => {
+            this.productsStoreService.loadProducts(paramMap.get('id'));
+        });
     }
 
     trackById(_: number, item: Product): Product['_id'] {
