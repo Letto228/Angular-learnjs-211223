@@ -11,8 +11,8 @@
                 *ngFor="let subCategory of category.subCategories"
                 mat-button
                 hideToggle
+                routerLink="/products-list"
                 class="sub-catigory"
-                [routerLink]="['products-list']"
                 [queryParams]="{subCat: subCategory._id}"
             >
                 {{ subCategory.name }}
