@@ -1,5 +1,5 @@
 <div
-    *ngIf="popupService.popupData$ | async as popupData"
+    *ngIf="popupData$ | async as popupData"
     class="popup-wrapper"
     [class.popup-wrapper--visible]="popupData.template"
 >
@@ -12,13 +12,8 @@
         >
             <mat-icon>close</mat-icon>
         </button>
-        <ng-container *ngIf="popupData.context; else withoutContext">
-            <ng-container
-                *ngTemplateOutlet="popupData.template; context: popupData.context"
-            ></ng-container>
-        </ng-container>
-        <ng-template #withoutContext>
-            <ng-container *ngTemplateOutlet="popupData.template; context: null"></ng-container>
-        </ng-template>
+        <ng-container
+            *ngTemplateOutlet="popupData.template; context: popupData?.context"
+        ></ng-container>
     </div>
 </div>

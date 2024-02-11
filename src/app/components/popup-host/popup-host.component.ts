@@ -8,9 +8,13 @@ import {PopupHostService} from './popup-host.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupHostComponent {
-    readonly popupService = inject(PopupHostService);
+    private readonly popupService = inject(PopupHostService);
 
     onCloseClick() {
         this.popupService.setTemplate(null);
+    }
+
+    get popupData$() {
+        return this.popupService.popupData$;
     }
 }
