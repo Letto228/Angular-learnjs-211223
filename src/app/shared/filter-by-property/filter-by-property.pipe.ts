@@ -9,51 +9,35 @@ export class FilterByPropertyPipe implements PipeTransform {
         propertyName: K,
         searchValue: T[K] | null | undefined,
     ): T[] {
-        const result = new Array<T>();
-        let isStringProperty: boolean | null = null;
-        let stringSearchValueLowerCase: string | null = null;
+        const isStringSearch = typeof searchValue === 'string';
+        const stringSearchValueLowerCase: string | null = isStringSearch
+            ? (searchValue as string).toLocaleLowerCase()
+            : null;
 
-        for (const item of items) {
-            const value = item[propertyName];
+        return items.filter(item => {
+            const propertyValue = item[propertyName];
 
-            if (value === null) {
-                if (searchValue === null) {
-                    result.push(item);
-                }
-
-                continue;
-            } else if (value === undefined) {
-                if (searchValue === undefined) {
-                    result.push(item);
-                }
-
-                continue;
-            } else if (searchValue === null || searchValue === undefined) {
-                continue;
+            if (propertyValue === null) {
+                return searchValue === null;
             }
 
-            if (isStringProperty === null) {
-                isStringProperty = typeof value === 'string';
-
-                if (isStringProperty) {
-                    stringSearchValueLowerCase = (searchValue as string).toLocaleLowerCase();
-                }
+            if (propertyValue === undefined) {
+                return searchValue === undefined;
             }
 
-            if (
-                isStringProperty &&
-                value.toString().toLocaleLowerCase().includes(stringSearchValueLowerCase!)
-            ) {
-                result.push(item);
-                continue;
+            if (searchValue === null || searchValue === undefined) {
+                return false;
             }
 
-            if (value === searchValue) {
-                result.push(item);
-                continue;
-            }
-        }
+            if (isStringSearch) {
+                const isPropertyIncludesSearchValue = (propertyValue as string)
+                    .toLocaleLowerCase()
+                    .includes(stringSearchValueLowerCase!);
 
-        return result;
+                return isPropertyIncludesSearchValue;
+            }
+
+            return propertyValue === searchValue;
+        });
     }
 }

@@ -14,11 +14,11 @@ export class ProductsListComponent implements OnInit {
     readonly products$ = this.productsStoreService.products$;
 
     // for easy
-    name = 'планшет';
+    // name = null;
 
     // for hard
-    readonly propertyName = '_id' as const; // keyof IProduct
-    searchPropertyValue = '32-gb-';
+    readonly propertyName = 'price' as const;
+    searchPropertyValue = 83;
 
     constructor(
         // @Inject(ProductsStoreService) private readonly productsStoreService: ProductsStoreService,
