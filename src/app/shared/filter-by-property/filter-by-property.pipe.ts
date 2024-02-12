@@ -30,11 +30,9 @@ export class FilterByPropertyPipe implements PipeTransform {
             }
 
             if (isStringSearch) {
-                const isPropertyIncludesSearchValue = (propertyValue as string)
+                return (propertyValue as string)
                     .toLocaleLowerCase()
                     .includes(stringSearchValueLowerCase!);
-
-                return isPropertyIncludesSearchValue;
             }
 
             return propertyValue === searchValue;
