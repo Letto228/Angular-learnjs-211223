@@ -5,5 +5,5 @@ export interface PaginationContext<T> {
     pageIndex: number[];
     next: () => void;
     back: () => void;
-    selectPage: () => void;
+    selectPage: (index: number) => void;
 }

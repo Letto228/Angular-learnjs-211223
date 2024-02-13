@@ -18,7 +18,7 @@ import {PaginationContext} from './pagination-context.interface';
 export class PaginationDirective<T> implements OnInit, OnChanges, OnDestroy {
     @Input() appPaginationOf: T[] | undefined | null;
 
-    @Input() directivePrefixChankSize = 4;
+    @Input() appPaginationChankSize = 4;
 
     groupItems: T[][] = [];
 
@@ -34,8 +34,8 @@ export class PaginationDirective<T> implements OnInit, OnChanges, OnDestroy {
         return Boolean(this.appPaginationOf?.length);
     }
 
-    ngOnChanges({appPaginationOf, directivePrefixChankSize}: SimpleChanges): void {
-        if (appPaginationOf || directivePrefixChankSize) {
+    ngOnChanges({appPaginationOf, appPaginationChankSize}: SimpleChanges): void {
+        if (appPaginationOf || appPaginationChankSize) {
             this.updateView();
         }
     }
@@ -51,8 +51,8 @@ export class PaginationDirective<T> implements OnInit, OnChanges, OnDestroy {
 
     private updateView() {
         if (this.shouldShowItems) {
+            this.groupItems = chunk(this.appPaginationOf, this.appPaginationChankSize);
             this.currentIndex$.next(0);
-            this.groupItems = chunk(this.appPaginationOf, this.directivePrefixChankSize);
 
             return;
         }
@@ -85,7 +85,9 @@ export class PaginationDirective<T> implements OnInit, OnChanges, OnDestroy {
             back: () => {
                 this.back();
             },
-            selectPage: this.selectCard.bind(this),
+            selectPage: (index: number) => {
+                this.selectPage(index);
+            },
         };
     }
 
@@ -106,15 +108,7 @@ export class PaginationDirective<T> implements OnInit, OnChanges, OnDestroy {
         this.currentIndex$.next(newIndex);
     }
 
-    private selectCard(index?: number): void {
-        let newIndex;
-
-        if (index) {
-            newIndex = index;
-        } else {
-            newIndex = 0;
-        }
-
-        this.currentIndex$.next(newIndex);
+    private selectPage(index: number): void {
+        this.currentIndex$.next(index);
     }
 }
