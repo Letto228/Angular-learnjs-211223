@@ -24,37 +24,62 @@
     <app-card class="card" [product]="productsFromNgIf[4]" (buy)="onProductBuy($event)"></app-card> -->
 
     <!-- Раскомментрировать для ДЗ -->
-    <!-- <ng-container
+    <ng-container
         *appPagination="
             let productsGroup of products;
             chankSize: 4;
-            let pageIndexes = pageIndexes;
+            let pageIndex = pageIndex;
             let activeIndex = index;
             let next = next;
             let back = back;
+            let selectPage = selectPage;
             let selectIndex = selectIndex
         "
-    > -->
-    <div class="cards">
-        <app-card
-            *ngFor="
-                let product of productsFromNgIf;
-                trackBy: trackById;
-                let index = index;
-                let first = first;
-                let last = last;
-                let even = even;
-                let odd = odd
-            "
-            class="card"
-            [product]="product"
-            (buy)="onProductBuy($event)"
-        ></app-card>
-    </div>
-    <div class="pagination">
-        <!-- Add pagination control -->
-    </div>
-    <!-- </ng-container> -->
+    >
+        <!-- <ng-container #cards></ng-container> -->
+        <div class="pagination__row">
+            <button
+                mat-icon-button
+                color="primary"
+                type="button"
+                class="pagination__button-prev"
+                (click)="back(); $event.stopPropagation()"
+            >
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <div class="cards">
+                <app-card
+                    *ngFor="let card of productsGroup"
+                    class="card"
+                    [product]="card"
+                    (buy)="onProductBuy($event)"
+                ></app-card>
+            </div>
+            <button
+                mat-icon-button
+                color="primary"
+                type="button"
+                class="pagination__button-next"
+                (click)="next(); $event.stopPropagation()"
+            >
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+        </div>
+        <div class="pagination">
+            <!-- Add pagination control -->
+            <button
+                *ngFor="let button of pageIndex; let index = index"
+                mat-mini-fab
+                color="primary"
+                type="button"
+                class="pagination__button"
+                [class.is-active]="selectIndex === index"
+                (click)="selectPage(index); $event.stopPropagation()"
+            >
+                {{ index + 1 }}
+            </button>
+        </div>
+    </ng-container>
 </div>
 <!-- </ng-template> -->
 
